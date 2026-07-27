@@ -130,20 +130,41 @@ answer.addEventListener("keydown", event => {
 
 P12.bindTerminalLinks();
 
-if(P12.isSolved("datei03")){
-    const solvedNote = document.createElement("div");
-    solvedNote.className = "fragment layer";
-    const storedFragment = P12.getFragment("datei03") || "4";
-    solvedNote.innerHTML = `STATUS: BEREITS ABGESCHLOSSEN – ERNEUTE ANALYSE MÖGLICH<strong>${storedFragment}</strong>`;
-    document.querySelector(".terminal").appendChild(solvedNote);
+function showPuzzleImmediately(){
+    output.innerHTML = message;
+    answerPanel.style.display = "block";
+    answer.disabled = false;
+    checkBtn.disabled = false;
+    answer.value = "";
+    feedback.className = "feedback";
+    feedback.innerHTML = "";
+    openBtn.style.display = "none";
+    answer.focus();
 }
 
-P12.playSequence(output, bootLines, () => {
-    openBtn.textContent = P12.isSolved("datei03")
-        ? "> DATEI ERNEUT ENTSCHLÜSSELN"
-        : "> DATEI ENTSCHLÜSSELN";
-    openBtn.style.display = "inline-block";
-});
+if(P12.isSolved("datei03")){
+    const storedFragment = P12.getFragment("datei03") || "4";
+
+    const solvedNote = document.createElement("div");
+    solvedNote.className = "fragment layer";
+    solvedNote.innerHTML =
+        `STATUS: BEREITS ABGESCHLOSSEN – ERNEUTE ANALYSE MÖGLICH
+         <strong>${storedFragment}</strong>`;
+    document.querySelector(".terminal").insertBefore(
+        solvedNote,
+        document.querySelector(".back-row")
+    );
+
+    // Bei einer bereits gelösten Datei das Rätsel ohne Boot-Animation
+    // und ohne zusätzlichen Klick sofort wieder anzeigen.
+    showPuzzleImmediately();
+}else{
+    P12.playSequence(output, bootLines, () => {
+        openBtn.textContent = "> DATEI ENTSCHLÜSSELN";
+        openBtn.style.display = "inline-block";
+    });
+}
+
 </script>
 </body>
 </html>

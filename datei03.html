@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROTOKOLL 12 – DATEI 03</title>
+<link rel="stylesheet" href="css/terminal.css">
+</head>
+<body>
+<main class="terminal">
+    <header class="header layer">
+        <div>
+            <div class="header-title">PROTOKOLL 12 // DATEI 03</div>
+            <div class="small">KATEGORIE: BEOBACHTUNG / NETZRECHERCHE</div>
+        </div>
+        <div class="header-status">KANAL: AKTIV<br>STATUS: VERSCHLÜSSELT</div>
+    </header>
+
+    <section id="output" class="output layer" aria-live="polite"></section>
+
+    <div class="controls layer">
+        <button id="openBtn" type="button" style="display:none">&gt; DATEI ENTSCHLÜSSELN</button>
+    </div>
+
+    <section id="answerPanel" class="answer-panel layer">
+        <label for="answer"><b>JAHRESZAHL EINGEBEN</b></label>
+        <p class="small">Gib die vollständig übersetzte Jahreszahl ein.</p>
+        <div class="answer-row">
+            <input id="answer" type="text" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="Jahreszahl">
+            <button id="checkBtn" type="button">&gt; PRÜFEN</button>
+        </div>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <div class="back-row layer">
+        <a href="index.html" class="terminal-button" data-terminal-link data-file="MISSIONSARCHIV">&lt; ZURÜCK ZUM ARCHIV</a>
+    </div>
+</main>
+
+<script src="js/terminal.js"></script>
+<script>
+const output = document.getElementById("output");
+const openBtn = document.getElementById("openBtn");
+const answerPanel = document.getElementById("answerPanel");
+const answer = document.getElementById("answer");
+const checkBtn = document.getElementById("checkBtn");
+const feedback = document.getElementById("feedback");
+
+const bootLines = [
+    "DATEI 03 WIRD GELADEN ...",
+    "",
+    "QUELLE: < K_ >",
+    "SIGNATUR VERIFIZIERT",
+    "DATENPAKET GEFUNDEN",
+    "",
+    "ZUGRIFF ERFORDERT BESTÄTIGUNG"
+];
+
+const decryptLines = [
+    "ENTSCHLÜSSELUNG GESTARTET ...",
+    "PRÜFE DATENINTEGRITÄT",
+    "KANAL STABIL",
+    "NACHRICHT FREIGEGEBEN"
+];
+
+const message = `Die KI kennt Karten.
+
+Sie kennt Satellitenbilder.
+
+Sie kennt Millionen Fotos.
+
+Aber sie weiß nicht,
+wie sich eine Stadt anfühlt,
+wenn man mitten in ihr steht.
+
+Weimar liegt in einem Tal.
+
+Von fast überall in der Stadt
+kannst du denselben Turm erkennen.
+
+Er wacht hoch über der Stadt.
+
+Finde ihn.
+
+An seiner Spitze befindet sich
+eine Jahreszahl.
+
+Sie wurde nicht mit unseren Zahlen geschrieben.
+
+Übersetze die Jahreszahl vollständig.
+
+Welche Ziffer für PROTOKOLL 12 wichtig ist,
+erfährst du erst nach der richtigen Eingabe.
+
+<span class="signature">&lt; K_ &gt;</span>`;
+
+openBtn.addEventListener("click", () => {
+    openBtn.style.display = "none";
+    P12.playSequence(output, decryptLines, () => {
+        P12.typeHtml(output, message, () => {
+            answerPanel.style.display = "block";
+            answer.focus();
+        });
+    });
+});
+
+function checkAnswer(){
+    const value = answer.value.trim();
+
+    if(value === "1945"){
+        feedback.className = "feedback success";
+        feedback.innerHTML =
+            `JAHRESZAHL BESTÄTIGT.<div class="fragment">FÜR PROTOKOLL 12 IST NUR DIE ZEHNERSTELLE RELEVANT<strong>4</strong></div>`;
+        answer.disabled = true;
+        checkBtn.disabled = true;
+    }else if(value === ""){
+        feedback.className = "feedback error";
+        feedback.textContent = "KEINE EINGABE ERKANNT.";
+    }else{
+        feedback.className = "feedback error";
+        feedback.textContent = "CODE NICHT AKZEPTIERT. PRÜFE DIE RÖMISCHE ZAHL UND ÜBERSETZE SIE VOLLSTÄNDIG.";
+    }
+}
+
+checkBtn.addEventListener("click", checkAnswer);
+answer.addEventListener("keydown", event => {
+    if(event.key === "Enter") checkAnswer();
+});
+
+P12.bindTerminalLinks();
+
+P12.playSequence(output, bootLines, () => {
+    openBtn.style.display = "inline-block";
+});
+</script>
+</body>
+</html>

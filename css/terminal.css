@@ -1,1 +1,177 @@
-
+:root{
+    --bg:#050505;
+    --panel:#0b0b0b;
+    --text:#66ffcc;
+    --border:#22aa88;
+    --muted:#2f8f78;
+    --danger:#ff6688;
+    --success:#8cff9f;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+    margin:0;
+    min-height:100vh;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Consolas,"Courier New",monospace;
+}
+a{color:inherit}
+.terminal{
+    width:min(940px,96vw);
+    background:var(--panel);
+    border:1px solid var(--border);
+    box-shadow:0 0 28px rgba(0,255,170,.18);
+    padding:28px;
+    position:relative;
+    overflow:hidden;
+}
+.terminal::after{
+    content:"";
+    pointer-events:none;
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.02) 0,
+        rgba(255,255,255,.02) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    opacity:.18;
+}
+.layer{position:relative;z-index:1}
+.header{
+    display:flex;
+    justify-content:space-between;
+    gap:18px;
+    padding-bottom:14px;
+    margin-bottom:22px;
+    border-bottom:1px solid var(--border);
+}
+.header-title{font-weight:bold}
+.header-status{color:var(--muted);text-align:right}
+.small{color:var(--muted);font-size:.92rem}
+.output{
+    min-height:390px;
+    white-space:pre-wrap;
+    line-height:1.65;
+}
+button,.terminal-button{
+    display:inline-block;
+    padding:11px 18px;
+    background:#111;
+    color:var(--text);
+    border:1px solid var(--text);
+    font:inherit;
+    text-decoration:none;
+    cursor:pointer;
+}
+button:hover,.terminal-button:hover{background:#143}
+button:focus,input:focus,.terminal-button:focus{
+    outline:2px solid var(--text);
+    outline-offset:3px;
+}
+.controls{margin-top:18px}
+.cursor{animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+.signature{
+    display:block;
+    margin-top:20px;
+    font-weight:bold;
+    letter-spacing:.08em;
+}
+.archive{
+    display:none;
+    animation:archiveIn .6s ease-out;
+}
+@keyframes archiveIn{
+    from{opacity:0;transform:translateY(28px)}
+    to{opacity:1;transform:translateY(0)}
+}
+.archive-header{
+    border-bottom:1px solid var(--border);
+    padding-bottom:14px;
+    margin-bottom:18px;
+}
+.archive-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+}
+.file{
+    display:block;
+    border:1px solid var(--muted);
+    background:#0d1110;
+    padding:14px;
+    min-height:94px;
+    color:var(--text);
+    text-decoration:none;
+}
+.file:hover{background:#10201b;border-color:var(--text)}
+.file-title{font-weight:bold;margin-bottom:8px}
+.file-meta{color:var(--muted);font-size:.9rem}
+.locked{color:var(--danger)}
+.open{color:var(--success)}
+.answer-panel{
+    display:none;
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+}
+.answer-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+input{
+    flex:1 1 180px;
+    min-width:0;
+    padding:11px 13px;
+    background:#080d0c;
+    border:1px solid var(--muted);
+    color:var(--text);
+    font:inherit;
+}
+.feedback{
+    min-height:26px;
+    margin-top:14px;
+    line-height:1.5;
+}
+.success{color:var(--success)}
+.error{color:var(--danger)}
+.fragment{
+    margin-top:18px;
+    padding:18px;
+    border:1px solid var(--success);
+    background:rgba(102,255,204,.05);
+    text-align:center;
+    font-size:1.05rem;
+}
+.fragment strong{
+    display:block;
+    margin-top:10px;
+    font-size:2.4rem;
+    letter-spacing:.15em;
+}
+.back-row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:24px;
+}
+@media(max-width:650px){
+    .terminal{padding:20px}
+    .header{display:block}
+    .header-status{text-align:left;margin-top:7px}
+    .output{min-height:450px;font-size:15px}
+    .archive-grid{grid-template-columns:1fr}
+    .answer-row{display:block}
+    input,.answer-row button{width:100%}
+    .answer-row button{margin-top:10px}
+}

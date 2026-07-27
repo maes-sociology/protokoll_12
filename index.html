@@ -27,23 +27,35 @@
         </div>
 
         <div class="archive-grid">
-            <div class="file" data-file-id="datei01"><div class="file-title">DATEI 01 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div></div>
-            <div class="file" data-file-id="datei02"><div class="file-title">DATEI 02 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div></div>
+            <div class="file" data-file-id="datei01"><div class="file-title">DATEI 01 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
+            <div class="file" data-file-id="datei02"><div class="file-title">DATEI 02 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
 
             <a href="datei03.html" class="file" data-terminal-link data-file="DATEI 03" data-file-id="datei03">
                 <div class="file-title">DATEI 03 <span class="file-marker" data-marker></span></div>
                 <div class="file-meta">KATEGORIE: BEOBACHTUNG / NETZRECHERCHE</div>
                 <div class="file-meta">STATUS: <span class="open" data-status>OFFEN</span></div>
+                <div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div>
             </a>
 
-            <div class="file" data-file-id="datei04"><div class="file-title">DATEI 04 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div></div>
-            <div class="file" data-file-id="datei05"><div class="file-title">DATEI 05 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div></div>
-            <div class="file" data-file-id="datei06"><div class="file-title">DATEI 06 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div></div>
-            <div class="file" data-file-id="datei07"><div class="file-title">DATEI 07 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div></div>
-            <div class="file" data-file-id="datei08"><div class="file-title">DATEI 08 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div></div>
-            <div class="file" data-file-id="datei09"><div class="file-title">DATEI 09 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div></div>
-            <div class="file" data-file-id="datei10"><div class="file-title">DATEI 10 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div></div>
+            <div class="file" data-file-id="datei04"><div class="file-title">DATEI 04 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
+            <div class="file" data-file-id="datei05"><div class="file-title">DATEI 05 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
+            <div class="file" data-file-id="datei06"><div class="file-title">DATEI 06 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
+            <div class="file" data-file-id="datei07"><div class="file-title">DATEI 07 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
+            <div class="file" data-file-id="datei08"><div class="file-title">DATEI 08 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
+            <div class="file" data-file-id="datei09"><div class="file-title">DATEI 09 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
+            <div class="file" data-file-id="datei10"><div class="file-title">DATEI 10 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
         </div>
+
+        <section class="reconstruction" aria-label="Rekonstruktion">
+            <div class="reconstruction-title">REKONSTRUKTION</div>
+            <div id="reconstructionSlots" class="reconstruction-slots"></div>
+
+            <div id="finalePanel" class="finale-panel" hidden>
+                <div>ALLE FRAGMENTE GESICHERT</div>
+                <strong>REKONSTRUKTION ABGESCHLOSSEN</strong>
+                <div>PROTOKOLL 12 KANN WIEDERHERGESTELLT WERDEN.</div>
+            </div>
+        </section>
     </section>
 </main>
 

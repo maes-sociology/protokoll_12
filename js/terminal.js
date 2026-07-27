@@ -100,12 +100,23 @@ window.P12 = {
         return `protokoll12_${fileId}_solved`;
     },
 
-    markSolved(fileId){
+    fragmentKey(fileId){
+        return `protokoll12_${fileId}_fragment`;
+    },
+
+    markSolved(fileId, fragment){
         localStorage.setItem(this.progressKey(fileId), "true");
+        if(fragment !== undefined && fragment !== null){
+            localStorage.setItem(this.fragmentKey(fileId), String(fragment));
+        }
     },
 
     isSolved(fileId){
         return localStorage.getItem(this.progressKey(fileId)) === "true";
+    },
+
+    getFragment(fileId){
+        return localStorage.getItem(this.fragmentKey(fileId));
     },
 
     solvedCount(total = 10){
@@ -117,13 +128,26 @@ window.P12 = {
         return count;
     },
 
+    getFragments(total = 10){
+        const fragments = [];
+        for(let i = 1; i <= total; i++){
+            const id = `datei${String(i).padStart(2, "0")}`;
+            fragments.push(this.getFragment(id));
+        }
+        return fragments;
+    },
+
     updateArchiveProgress(){
-        const count = this.solvedCount(10);
+        const total = 10;
+        const count = this.solvedCount(total);
+        const fragments = this.getFragments(total);
         const countNode = document.getElementById("progressCount");
         const barNode = document.getElementById("progressBar");
+        const reconstructionNode = document.getElementById("reconstructionSlots");
+        const finaleNode = document.getElementById("finalePanel");
 
-        if(countNode) countNode.textContent = `${count} / 10`;
-        if(barNode) barNode.textContent = "█".repeat(count) + "░".repeat(10 - count);
+        if(countNode) countNode.textContent = `${count} / ${total}`;
+        if(barNode) barNode.textContent = "█".repeat(count) + "░".repeat(total - count);
 
         document.querySelectorAll("[data-file-id]").forEach(file => {
             const fileId = file.dataset.fileId;
@@ -139,6 +163,34 @@ window.P12 = {
 
             const marker = file.querySelector("[data-marker]");
             if(marker) marker.textContent = "✓";
+
+            const fragmentValue = this.getFragment(fileId);
+            const fragmentRow = file.querySelector("[data-fragment-row]");
+            const fragmentNode = file.querySelector("[data-fragment]");
+
+            if(fragmentRow && fragmentValue !== null){
+                fragmentRow.hidden = false;
+            }
+            if(fragmentNode && fragmentValue !== null){
+                fragmentNode.textContent = `[ ${fragmentValue} ]`;
+            }
         });
+
+        if(reconstructionNode){
+            reconstructionNode.innerHTML = "";
+            fragments.forEach((fragment, index) => {
+                const slot = document.createElement("span");
+                slot.className = fragment === null
+                    ? "reconstruction-slot empty"
+                    : "reconstruction-slot filled";
+                slot.textContent = fragment === null ? "_" : fragment;
+                slot.setAttribute("aria-label", `Fragment ${index + 1}: ${fragment === null ? "fehlt" : fragment}`);
+                reconstructionNode.appendChild(slot);
+            });
+        }
+
+        if(finaleNode){
+            finaleNode.hidden = count !== total;
+        }
     }
 };

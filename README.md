@@ -1,20 +1,18 @@
-# PROTOKOLL 12 – Upload auf GitHub Pages
+# PROTOKOLL 12 – Archiv-Fix
 
-Lade den gesamten Inhalt dieses Ordners in dein Repository hoch.
-
-Die Struktur muss so bleiben:
+Ersetze in deinem lokalen GitHub-Projekt mindestens diese beiden Dateien:
 
 - index.html
 - datei03.html
-- css/terminal.css
-- js/terminal.js
 
-Wichtig:
-Nicht nur die HTML-Dateien hochladen. Die Unterordner `css` und `js`
-werden ebenfalls benötigt.
+Danach in GitHub Desktop:
 
-Wenn GitHub Pages bereits aktiviert ist, wird die neue Version nach
-dem Commit normalerweise innerhalb weniger Minuten veröffentlicht.
+1. Commit to main
+2. Push origin
 
-DATEI 03 ist im Missionsarchiv bereits verlinkt.
-Die übrigen Dateien sind als Platzhalter markiert.
+Änderung:
+Der Button „ZURÜCK ZUM ARCHIV“ führt nun zu `index.html#archiv`.
+Die Startseite erkennt diesen Zusatz und zeigt sofort das Missionsarchiv,
+ohne K.s gesamte Nachricht erneut abzuspielen.
+
+Die Ordner `css` und `js` sind unverändert enthalten.

@@ -175,10 +175,21 @@ btn.addEventListener("click", () => {
     }
 });
 
-P12.playSequence(output, introBoot, () => {
-    btn.textContent = "> NACHRICHT ÖFFNEN";
-    btn.style.display = "inline-block";
-});
+function showArchiveImmediately(){
+    output.style.display = "none";
+    btn.style.display = "none";
+    archive.style.display = "block";
+    P12.bindTerminalLinks();
+}
+
+if(location.hash === "#archiv"){
+    showArchiveImmediately();
+}else{
+    P12.playSequence(output, introBoot, () => {
+        btn.textContent = "> NACHRICHT ÖFFNEN";
+        btn.style.display = "inline-block";
+    });
+}
 </script>
 </body>
 </html>

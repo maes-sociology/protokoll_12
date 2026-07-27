@@ -116,7 +116,17 @@ window.P12 = {
     },
 
     getFragment(fileId){
-        return localStorage.getItem(this.fragmentKey(fileId));
+        let fragment = localStorage.getItem(this.fragmentKey(fileId));
+
+        // Migration alter Spielstände:
+        // DATEI 03 konnte bereits als gelöst gespeichert sein,
+        // bevor Fragmente im localStorage dokumentiert wurden.
+        if(fragment === null && fileId === "datei03" && this.isSolved(fileId)){
+            fragment = "4";
+            localStorage.setItem(this.fragmentKey(fileId), fragment);
+        }
+
+        return fragment;
     },
 
     solvedCount(total = 10){
@@ -170,6 +180,7 @@ window.P12 = {
 
             if(fragmentRow && fragmentValue !== null){
                 fragmentRow.hidden = false;
+                fragmentRow.style.display = "block";
             }
             if(fragmentNode && fragmentValue !== null){
                 fragmentNode.textContent = `[ ${fragmentValue} ]`;

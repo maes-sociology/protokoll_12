@@ -175,3 +175,31 @@ input{
     input,.answer-row button{width:100%}
     .answer-row button{margin-top:10px}
 }
+
+.progress-box{
+    margin-top:14px;
+    padding:12px 14px;
+    border:1px solid var(--muted);
+    background:#090d0c;
+}
+.progress-line{
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+}
+.progress-bar{
+    margin-top:8px;
+    letter-spacing:.16em;
+    color:var(--success);
+}
+.file-solved{
+    border-color:var(--success);
+    background:rgba(140,255,159,.055);
+}
+.file-marker{
+    float:right;
+    color:var(--success);
+    font-weight:bold;
+}
+.complete{color:var(--success)}

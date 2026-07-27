@@ -94,5 +94,51 @@ window.P12 = {
                 ], destination);
             });
         });
+    },
+
+    progressKey(fileId){
+        return `protokoll12_${fileId}_solved`;
+    },
+
+    markSolved(fileId){
+        localStorage.setItem(this.progressKey(fileId), "true");
+    },
+
+    isSolved(fileId){
+        return localStorage.getItem(this.progressKey(fileId)) === "true";
+    },
+
+    solvedCount(total = 10){
+        let count = 0;
+        for(let i = 1; i <= total; i++){
+            const id = `datei${String(i).padStart(2, "0")}`;
+            if(this.isSolved(id)) count++;
+        }
+        return count;
+    },
+
+    updateArchiveProgress(){
+        const count = this.solvedCount(10);
+        const countNode = document.getElementById("progressCount");
+        const barNode = document.getElementById("progressBar");
+
+        if(countNode) countNode.textContent = `${count} / 10`;
+        if(barNode) barNode.textContent = "█".repeat(count) + "░".repeat(10 - count);
+
+        document.querySelectorAll("[data-file-id]").forEach(file => {
+            const fileId = file.dataset.fileId;
+            if(!this.isSolved(fileId)) return;
+
+            file.classList.add("file-solved");
+
+            const status = file.querySelector("[data-status]");
+            if(status){
+                status.textContent = "ABGESCHLOSSEN";
+                status.className = "complete";
+            }
+
+            const marker = file.querySelector("[data-marker]");
+            if(marker) marker.textContent = "✓";
+        });
     }
 };

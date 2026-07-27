@@ -108,6 +108,7 @@ function checkAnswer(){
     const value = answer.value.trim();
 
     if(value === "1945"){
+        P12.markSolved("datei03");
         feedback.className = "feedback success";
         feedback.innerHTML =
             `JAHRESZAHL BESTÄTIGT.<div class="fragment">FÜR PROTOKOLL 12 IST NUR DIE ZEHNERSTELLE RELEVANT<strong>4</strong></div>`;
@@ -128,6 +129,13 @@ answer.addEventListener("keydown", event => {
 });
 
 P12.bindTerminalLinks();
+
+if(P12.isSolved("datei03")){
+    const solvedNote = document.createElement("div");
+    solvedNote.className = "fragment layer";
+    solvedNote.innerHTML = 'STATUS: BEREITS ABGESCHLOSSEN<strong>4</strong>';
+    document.querySelector(".terminal").appendChild(solvedNote);
+}
 
 P12.playSequence(output, bootLines, () => {
     openBtn.style.display = "inline-block";

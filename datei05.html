@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOKOLL 12 – DATEI 04</title>
+<title>PROTOKOLL 12 – DATEI 05</title>
 <link rel="stylesheet" href="css/terminal.css?v=9">
 </head>
 <body>
 <main class="terminal">
     <header class="header layer">
         <div>
-            <div class="header-title">PROTOKOLL 12 // DATEI 04</div>
-            <div class="small">KATEGORIE: RECHERCHE / MUSTERERKENNUNG</div>
+            <div class="header-title">PROTOKOLL 12 // DATEI 05</div>
+            <div class="small">KATEGORIE: RECHERCHE / SPRACHMUSTER</div>
         </div>
         <div class="header-status">KANAL: AKTIV<br>STATUS: VERSCHLÜSSELT</div>
     </header>
@@ -40,10 +40,10 @@
 <script src="js/terminal.js?v=9"></script>
 <script>
 window.P12_MISSION = {
-    fileId: "datei04",
+    fileId: "datei05",
     fragment: "9",
     bootLines: [
-        "DATEI 04 WIRD GELADEN ...", "", "QUELLE: < K_ >",
+        "DATEI 05 WIRD GELADEN ...", "", "QUELLE: < K_ >",
         "SIGNATUR VERIFIZIERT", "DATENPAKET GEFUNDEN", "",
         "ZUGRIFF ERFORDERT BESTÄTIGUNG"
     ],
@@ -51,63 +51,57 @@ window.P12_MISSION = {
         "ENTSCHLÜSSELUNG GESTARTET ...", "PRÜFE DATENINTEGRITÄT",
         "KANAL STABIL", "NACHRICHT FREIGEGEBEN"
     ],
-    message: `Die KI kennt Suchmaschinen.
+    message: `Die KI sucht nach Adressen.
 
-Sie kennt Speisekarten.
-
-Sie kennt Millionen von Einträgen.
-
-Aber sie weiß nicht,
-welcher Ort für die Menschen
-wirklich der beste ist.
+Menschen erkennen,
+dass manche Straßennamen
+mehr verraten als Wegbeschreibungen.
 
 Finde heraus,
-wo viele Weimarer sagen,
-dass es die beste Pizza der Stadt gibt.
+wo man in Weimar
+die Joppie Remoulade
+bekommen kann.
 
-Ein Hinweis:
+Im Namen der Straße
+verbirgt sich
+ein Sternzeichen.
 
-Der gesuchte Ort liegt direkt
-neben einem Eisladen.
-
-Die Speisekarte findest du,
-wenn du richtig suchst.
-
-Jede Pizza trägt eine Nummer.
-
-Suche die höchste Nummer.
-
-Gib sie ein.
+Finde es.
 
 <span class="signature">&lt; K_ &gt;</span>`,
     stages: [
         {
-            label: "HÖCHSTE PIZZANUMMER EINGEBEN",
-            hint: "Gib die höchste Nummer auf der Speisekarte ein.",
-            placeholder: "Nummer",
-            inputMode: "numeric",
-            maxLength: 8,
-            answers: ["405"],
-            error: "NICHT BESTÄTIGT. PRÜFE DIE HÖCHSTE NUMMER AUF DER SPEISEKARTE.",
-            transition: `405 BESTÄTIGT.
+            label: "STERNZEICHEN EINGEBEN",
+            hint: "Welches Sternzeichen verbirgt sich im Namen der Straße?",
+            placeholder: "Sternzeichen",
+            inputMode: "text",
+            maxLength: 12,
+            normalizeUmlauts: true,
+            answers: ["Schütze", "Schuetze"],
+            error: "NICHT BESTÄTIGT. FINDE ZUERST DEN ORT UND UNTERSUCHE DEN NAMEN DER STRASSE.",
+            transition: `SCHÜTZE BESTÄTIGT.
 
-Die KI sammelt Zahlen.
+Die KI erkennt Wörter.
+
 Menschen erkennen Zusammenhänge.
 
-Bilde die Quersumme:
+Der Schütze
+ist nicht nur ein Wort.
 
-4 + 0 + 5 = ?
+An welcher Stelle
+steht dieses Sternzeichen
+im Tierkreis?
 
-Gib das Ergebnis ein.`
+Gib die Zahl ein.`
         },
         {
-            label: "QUERSUMME EINGEBEN",
-            hint: "Addiere die einzelnen Ziffern der bestätigten Nummer.",
-            placeholder: "Quersumme",
+            label: "POSITION IM TIERKREIS EINGEBEN",
+            hint: "An welcher Stelle steht der Schütze im Tierkreis?",
+            placeholder: "Position",
             inputMode: "numeric",
             maxLength: 2,
             answers: ["9"],
-            error: "QUERSUMME NICHT KORREKT. ADDIERE DIE EINZELNEN ZIFFERN."
+            error: "POSITION NICHT KORREKT. ZÄHLE DIE STERNZEICHEN IN IHRER REIHENFOLGE."
         }
     ],
     successHtml: `RICHTIG.<div class="fragment">FRAGMENT GESICHERT<strong>9</strong></div><span class="signature">&lt; K_ &gt;</span>`

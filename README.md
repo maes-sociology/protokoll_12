@@ -1,13 +1,9 @@
 # PROTOKOLL 12
 
-## Änderungen in dieser Version
+Aktueller Stand:
 
-- DATEI 04 enthält jetzt das Rätsel zur Joppie Remoulade.
-- Erste Lösung: `SCHÜTZE` bzw. `SCHUETZE`.
-- Zweite Lösung: Position des Schützen im Tierkreis (`9`).
-- Das gesicherte Fragment ist `[ 9 ]`.
-- DATEI 03 und DATEI 04 verwenden jetzt denselben Aufbau und dieselbe gemeinsame Missionslogik.
-- Die wiederverwendbare Logik liegt in `js/mission.js`; neue Missionen benötigen künftig hauptsächlich eine Konfiguration.
-- Doppelte CSS-Regeln wurden entfernt.
+- DATEI 03: Turm / Jahreszahl 1945 → Fragment 4
+- DATEI 04: beste Pizzeria / höchste Nummer 405 / Quersumme → Fragment 9
+- DATEI 05: Joppie Remoulade / Schützengasse / Schütze als neuntes Sternzeichen → Fragment 9
 
-Die Dateien können direkt in das bestehende GitHub-Pages-Repository kopiert werden.
+Die Missionsseiten verwenden die gemeinsame Logik aus `js/mission.js`. Fortschritt und Fragmente werden im `localStorage` des Browsers gespeichert.

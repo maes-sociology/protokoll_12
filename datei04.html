@@ -1,114 +1,133 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>PROTOKOLL 12 // DATEI 04</title>
-    <link rel="stylesheet" href="css/terminal.css?v=5">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROTOKOLL 12 – DATEI 04</title>
+<link rel="stylesheet" href="css/terminal.css?v=7">
 </head>
 <body>
 <main class="terminal">
-    <header class="topbar">
-        <div>PROTOKOLL 12 // DATEI 04</div>
-        <div class="status-dot">VERBINDUNG STABIL</div>
+    <header class="header layer">
+        <div>
+            <div class="header-title">PROTOKOLL 12 // DATEI 04</div>
+            <div class="small">KATEGORIE: RECHERCHE / MUSTERERKENNUNG</div>
+        </div>
+        <div class="header-status">KANAL: AKTIV<br>STATUS: VERSCHLÜSSELT</div>
     </header>
 
-    <section class="layer">
-        <div id="output" class="output" aria-live="polite"></div>
+    <section id="output" class="output layer" aria-live="polite"></section>
 
-        <button id="openBtn" class="terminal-button" type="button" style="display:none">
-            &gt; DATEI ENTSCHLÜSSELN
-        </button>
+    <div class="controls layer">
+        <button id="openBtn" type="button" style="display:none">&gt; DATEI ENTSCHLÜSSELN</button>
+    </div>
 
-        <div id="answerPanel" class="answer-panel" style="display:none">
-            <label id="answerLabel" for="answer">HÖCHSTE PIZZANUMMER:</label>
-            <div class="answer-row">
-                <input id="answer" type="text" inputmode="numeric" autocomplete="off" maxlength="8">
-                <button id="checkBtn" class="terminal-button" type="button">&gt; PRÜFEN</button>
-            </div>
-            <div id="feedback" class="feedback" aria-live="polite"></div>
+    <section id="answerPanel" class="answer-panel layer">
+        <label id="answerLabel" for="answer"><b>HÖCHSTE PIZZANUMMER EINGEBEN</b></label>
+        <p id="answerHint" class="small">Gib die höchste Nummer auf der Speisekarte ein.</p>
+        <div class="answer-row">
+            <input id="answer" type="text" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="Nummer">
+            <button id="checkBtn" type="button">&gt; PRÜFEN</button>
         </div>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
     </section>
 
-    <div class="back-row">
-        <a href="index.html#archiv" class="terminal-link">&lt; ZURÜCK ZUM MISSIONSARCHIV</a>
+    <div class="back-row layer">
+        <a href="index.html#archiv" class="terminal-button" data-terminal-link data-file="MISSIONSARCHIV">&lt; ZURÜCK ZUM ARCHIV</a>
     </div>
 </main>
 
-<script src="js/terminal.js?v=5"></script>
+<script src="js/terminal.js?v=7"></script>
 <script>
-P12.bindTerminalLinks();
-
 const output = document.getElementById("output");
 const openBtn = document.getElementById("openBtn");
 const answerPanel = document.getElementById("answerPanel");
 const answer = document.getElementById("answer");
 const answerLabel = document.getElementById("answerLabel");
+const answerHint = document.getElementById("answerHint");
 const checkBtn = document.getElementById("checkBtn");
 const feedback = document.getElementById("feedback");
 
 let stage = 1;
 
 const bootLines = [
-    "DATEI 04 WIRD GELADEN...",
-    "QUELLE: UNBEKANNT",
-    "KATEGORIE: RECHERCHE / MUSTERERKENNUNG",
-    "STATUS: ZUGRIFF MÖGLICH"
+    "DATEI 04 WIRD GELADEN ...",
+    "",
+    "QUELLE: < K_ >",
+    "SIGNATUR VERIFIZIERT",
+    "DATENPAKET GEFUNDEN",
+    "",
+    "ZUGRIFF ERFORDERT BESTÄTIGUNG"
 ];
 
-const message = `
-<p>Die KI kennt Suchmaschinen.</p>
+const decryptLines = [
+    "ENTSCHLÜSSELUNG GESTARTET ...",
+    "PRÜFE DATENINTEGRITÄT",
+    "KANAL STABIL",
+    "NACHRICHT FREIGEGEBEN"
+];
 
-<p>Sie kennt Speisekarten.</p>
+const message = `Die KI kennt Suchmaschinen.
 
-<p>Sie kennt Millionen von Einträgen.</p>
+Sie kennt Speisekarten.
 
-<p>Aber sie weiß nicht,<br>
-welcher Ort für die Menschen<br>
-wirklich der beste ist.</p>
+Sie kennt Millionen von Einträgen.
 
-<p>Finde heraus,<br>
-wo viele Weimarer sagen,<br>
-dass es die beste Pizza der Stadt gibt.</p>
+Aber sie weiß nicht,
+welcher Ort für die Menschen
+wirklich der beste ist.
 
-<p>Ein Hinweis:</p>
+Finde heraus,
+wo viele Weimarer sagen,
+dass es die beste Pizza der Stadt gibt.
 
-<p>Der gesuchte Ort liegt direkt<br>
-neben einem Eisladen.</p>
+Ein Hinweis:
 
-<p>Die Speisekarte findest du,<br>
-wenn du richtig suchst.</p>
+Der gesuchte Ort liegt direkt
+neben einem Eisladen.
 
-<p>Jede Pizza trägt eine Nummer.</p>
+Die Speisekarte findest du,
+wenn du richtig suchst.
 
-<p>Suche die höchste Nummer.</p>
+Jede Pizza trägt eine Nummer.
 
-<p>Gib sie ein.</p>
+Suche die höchste Nummer.
 
-<p>&lt; K_ &gt;</p>
-`;
+Gib sie ein.
 
-function resetForReplay(){
+<span class="signature">&lt; K_ &gt;</span>`;
+
+function prepareStageOne(){
     stage = 1;
-    output.innerHTML = message;
-    answerLabel.textContent = "HÖCHSTE PIZZANUMMER:";
-    answer.placeholder = "";
+    answerLabel.innerHTML = "<b>HÖCHSTE PIZZANUMMER EINGEBEN</b>";
+    answerHint.textContent = "Gib die höchste Nummer auf der Speisekarte ein.";
+    answer.placeholder = "Nummer";
+    answer.maxLength = 8;
     answer.value = "";
     answer.disabled = false;
     checkBtn.disabled = false;
     feedback.className = "feedback";
     feedback.innerHTML = "";
-    answerPanel.style.display = "block";
-    openBtn.style.display = "none";
-    answer.focus();
 }
 
-function showPuzzle(){
+function showPuzzleImmediately(){
+    prepareStageOne();
     output.innerHTML = message;
     answerPanel.style.display = "block";
     openBtn.style.display = "none";
     answer.focus();
 }
+
+openBtn.addEventListener("click", () => {
+    openBtn.style.display = "none";
+    P12.playSequence(output, decryptLines, () => {
+        P12.typeHtml(output, message, () => {
+            prepareStageOne();
+            answerPanel.style.display = "block";
+            answer.focus();
+        });
+    });
+});
 
 function normalize(value){
     return value.trim().replace(/\s+/g, "");
@@ -117,17 +136,26 @@ function normalize(value){
 function showStageTwo(){
     stage = 2;
     answer.value = "";
-    answerLabel.textContent = "QUERSUMME:";
+    answer.maxLength = 2;
+    answer.placeholder = "Quersumme";
+    answerLabel.innerHTML = "<b>QUERSUMME EINGEBEN</b>";
+    answerHint.textContent = "Addiere die einzelnen Ziffern der bestätigten Nummer.";
     feedback.className = "feedback success";
-    feedback.innerHTML = `
-        <p>405 BESTÄTIGT.</p>
-        <p>Die KI sammelt Zahlen.</p>
-        <p>Menschen erkennen Zusammenhänge.</p>
-        <p>Bilde die Quersumme.</p>
-        <p>4 + 0 + 5 = ?</p>
-        <p>Gib das Fragment ein.</p>
-    `;
-    answer.focus();
+
+    const stageTwoMessage = `405 BESTÄTIGT.
+
+Die KI sammelt Zahlen.
+Menschen erkennen Zusammenhänge.
+
+Bilde die Quersumme:
+
+4 + 0 + 5 = ?
+
+Gib das Ergebnis ein.`;
+
+    P12.typeHtml(feedback, stageTwoMessage, () => {
+        answer.focus();
+    }, 18);
 }
 
 function solve(){
@@ -135,16 +163,18 @@ function solve(){
     answer.disabled = true;
     checkBtn.disabled = true;
     feedback.className = "feedback success";
-    feedback.innerHTML = `
-        <p>RICHTIG.</p>
-        <p>FRAGMENT GESICHERT.</p>
-        <div class="fragment">[ 9 ]</div>
-        <p>&lt; K_ &gt;</p>
-    `;
+    feedback.innerHTML =
+        `RICHTIG.<div class="fragment">FRAGMENT GESICHERT<strong>9</strong></div><span class="signature">&lt; K_ &gt;</span>`;
 }
 
 function checkAnswer(){
     const value = normalize(answer.value);
+
+    if(value === ""){
+        feedback.className = "feedback error";
+        feedback.textContent = "KEINE EINGABE ERKANNT.";
+        return;
+    }
 
     if(stage === 1){
         if(value === "405"){
@@ -166,14 +196,16 @@ function checkAnswer(){
     }
 }
 
-openBtn.addEventListener("click", showPuzzle);
 checkBtn.addEventListener("click", checkAnswer);
 answer.addEventListener("keydown", event => {
     if(event.key === "Enter") checkAnswer();
 });
 
+P12.bindTerminalLinks();
+
 if(P12.isSolved("datei04")){
     const storedFragment = P12.getFragment("datei04") || "9";
+
     const solvedNote = document.createElement("div");
     solvedNote.className = "fragment layer";
     solvedNote.innerHTML =
@@ -183,9 +215,11 @@ if(P12.isSolved("datei04")){
         solvedNote,
         document.querySelector(".back-row")
     );
-    resetForReplay();
+
+    showPuzzleImmediately();
 }else{
     P12.playSequence(output, bootLines, () => {
+        openBtn.textContent = "> DATEI ENTSCHLÜSSELN";
         openBtn.style.display = "inline-block";
     });
 }

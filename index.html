@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROTOKOLL 12</title>
-<link rel="stylesheet" href="css/terminal.css?v=7">
+<link rel="stylesheet" href="css/terminal.css?v=10">
 </head>
 <body>
 <main class="terminal">
@@ -45,8 +45,8 @@
             </a>
             <a href="datei05.html" class="file" data-terminal-link data-file="DATEI 05" data-file-id="datei05">
                 <div class="file-title">DATEI 05 <span class="file-marker" data-marker></span></div>
-                <div class="file-meta">STATUS: <span class="open" data-status>VERFÜGBAR</span></div>
-                <div class="file-action">&gt; DATEI ÖFFNEN</div>
+                <div class="file-meta">KATEGORIE: ORTSKENNTNIS / SPRACHMUSTER</div>
+                <div class="file-meta">STATUS: <span class="open" data-status>OFFEN</span></div>
                 <div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div>
             </a>
             <div class="file" data-file-id="datei06"><div class="file-title">DATEI 06 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
@@ -69,7 +69,7 @@
     </section>
 </main>
 
-<script src="js/terminal.js?v=7"></script>
+<script src="js/terminal.js?v=10"></script>
 <script>
 const output = document.getElementById("output");
 const btn = document.getElementById("nextBtn");
@@ -212,6 +212,8 @@ function showArchiveImmediately(){
     P12.bindTerminalLinks();
     P12.updateArchiveProgress();
 }
+
+P12.installAdminReset(document.querySelector(".archive-header b"));
 
 if(location.hash === "#archiv"){
     showArchiveImmediately();

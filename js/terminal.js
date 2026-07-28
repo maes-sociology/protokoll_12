@@ -1,207 +1,209 @@
-window.P12 = {
-    playSequence(output, lines, done, delay = 480){
-        output.innerHTML = "";
-        let index = 0;
+(function () {
+    "use strict";
 
-        function nextLine(){
-            if(index < lines.length){
-                output.textContent += lines[index] + "\n";
-                index++;
-                setTimeout(nextLine, delay);
-            }else{
+    const KNOWN_FRAGMENTS = {
+        datei03: "4",
+        datei04: "9",
+        datei05: "9"
+    };
+
+    window.P12 = {
+        playSequence(output, lines, done, delay = 480) {
+            output.innerHTML = "";
+            let index = 0;
+
+            function nextLine() {
+                if (index < lines.length) {
+                    output.textContent += lines[index] + "\n";
+                    index += 1;
+                    setTimeout(nextLine, delay);
+                    return;
+                }
                 output.innerHTML += "\n<span class='cursor'>█</span>";
                 setTimeout(done, 550);
             }
-        }
-        nextLine();
-    },
+            nextLine();
+        },
 
-    typeHtml(output, html, done, speed = 20){
-        output.innerHTML = "";
-        let index = 0;
-        let buffer = "";
-        let insideTag = false;
+        typeHtml(output, html, done = function () {}, speed = 20) {
+            output.innerHTML = "";
+            let index = 0;
+            let buffer = "";
+            let insideTag = false;
 
-        function typeNext(){
-            if(index >= html.length){
-                output.innerHTML = buffer;
-                done();
-                return;
+            function typeNext() {
+                if (index >= html.length) {
+                    output.innerHTML = buffer;
+                    done();
+                    return;
+                }
+
+                const char = html[index];
+                buffer += char;
+                if (char === "<") insideTag = true;
+                if (char === ">") {
+                    insideTag = false;
+                    output.innerHTML = buffer;
+                    index += 1;
+                    typeNext();
+                    return;
+                }
+                if (!insideTag) {
+                    output.innerHTML = buffer + "<span class='cursor'>█</span>";
+                }
+                index += 1;
+                setTimeout(typeNext, speed);
             }
+            typeNext();
+        },
 
-            const char = html[index];
-            buffer += char;
+        loadingTransition(lines, destination) {
+            const overlay = document.createElement("div");
+            Object.assign(overlay.style, {
+                position: "fixed",
+                inset: "0",
+                background: "#050505",
+                color: "#66ffcc",
+                fontFamily: 'Consolas,"Courier New",monospace',
+                padding: "30px",
+                zIndex: "9999",
+                whiteSpace: "pre-wrap"
+            });
+            document.body.appendChild(overlay);
 
-            if(char === "<") insideTag = true;
-
-            if(char === ">"){
-                insideTag = false;
-                output.innerHTML = buffer;
-                index++;
-                typeNext();
-                return;
-            }
-
-            if(!insideTag){
-                output.innerHTML = buffer + "<span class='cursor'>█</span>";
-            }
-
-            index++;
-            setTimeout(typeNext, speed);
-        }
-
-        typeNext();
-    },
-
-    loadingTransition(lines, destination){
-        const body = document.body;
-        const overlay = document.createElement("div");
-        overlay.style.position = "fixed";
-        overlay.style.inset = "0";
-        overlay.style.background = "#050505";
-        overlay.style.color = "#66ffcc";
-        overlay.style.fontFamily = 'Consolas,"Courier New",monospace';
-        overlay.style.padding = "30px";
-        overlay.style.zIndex = "9999";
-        overlay.style.whiteSpace = "pre-wrap";
-        body.appendChild(overlay);
-
-        let i = 0;
-        function step(){
-            if(i < lines.length){
-                overlay.textContent += lines[i] + "\n";
-                i++;
-                setTimeout(step, 430);
-            }else{
+            let index = 0;
+            function step() {
+                if (index < lines.length) {
+                    overlay.textContent += lines[index] + "\n";
+                    index += 1;
+                    setTimeout(step, 430);
+                    return;
+                }
                 overlay.innerHTML += "\n<span class='cursor'>█</span>";
-                setTimeout(() => location.href = destination, 700);
+                setTimeout(() => { window.location.href = destination; }, 700);
             }
-        }
-        step();
-    },
+            step();
+        },
 
-    bindTerminalLinks(selector = "[data-terminal-link]"){
-        document.querySelectorAll(selector).forEach(link => {
-            link.addEventListener("click", event => {
-                event.preventDefault();
-                const destination = link.getAttribute("href");
-                const label = link.dataset.file || "DATEI";
-                P12.loadingTransition([
-                    `${label} WIRD ANGEFORDERT ...`,
-                    "PRÜFE ZUGRIFFSRECHTE",
-                    "SIGNATUR BESTÄTIGT",
-                    "DATEI WIRD GELADEN ..."
-                ], destination);
+        bindTerminalLinks(selector = "[data-terminal-link]") {
+            document.querySelectorAll(selector).forEach((link) => {
+                if (link.dataset.p12Bound === "true") return;
+                link.dataset.p12Bound = "true";
+                link.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    const destination = link.getAttribute("href");
+                    const label = link.dataset.file || "DATEI";
+                    this.loadingTransition([
+                        `${label} WIRD ANGEFORDERT ...`,
+                        "PRÜFE ZUGRIFFSRECHTE",
+                        "SIGNATUR BESTÄTIGT",
+                        "DATEI WIRD GELADEN ..."
+                    ], destination);
+                });
             });
-        });
-    },
+        },
 
-    progressKey(fileId){
-        return `protokoll12_${fileId}_solved`;
-    },
+        progressKey(fileId) { return `protokoll12_${fileId}_solved`; },
+        fragmentKey(fileId) { return `protokoll12_${fileId}_fragment`; },
 
-    fragmentKey(fileId){
-        return `protokoll12_${fileId}_fragment`;
-    },
-
-    markSolved(fileId, fragment){
-        localStorage.setItem(this.progressKey(fileId), "true");
-        if(fragment !== undefined && fragment !== null){
-            localStorage.setItem(this.fragmentKey(fileId), String(fragment));
-        }
-    },
-
-    isSolved(fileId){
-        return localStorage.getItem(this.progressKey(fileId)) === "true";
-    },
-
-    getFragment(fileId){
-        let fragment = localStorage.getItem(this.fragmentKey(fileId));
-
-        // Migration alter Spielstände:
-        // DATEI 03 konnte bereits als gelöst gespeichert sein,
-        // bevor Fragmente im localStorage dokumentiert wurden.
-        if(fragment === null && fileId === "datei03" && this.isSolved(fileId)){
-            fragment = "4";
-            localStorage.setItem(this.fragmentKey(fileId), fragment);
-        }
-
-        return fragment;
-    },
-
-    solvedCount(total = 10){
-        let count = 0;
-        for(let i = 1; i <= total; i++){
-            const id = `datei${String(i).padStart(2, "0")}`;
-            if(this.isSolved(id)) count++;
-        }
-        return count;
-    },
-
-    getFragments(total = 10){
-        const fragments = [];
-        for(let i = 1; i <= total; i++){
-            const id = `datei${String(i).padStart(2, "0")}`;
-            fragments.push(this.getFragment(id));
-        }
-        return fragments;
-    },
-
-    updateArchiveProgress(){
-        const total = 10;
-        const count = this.solvedCount(total);
-        const fragments = this.getFragments(total);
-        const countNode = document.getElementById("progressCount");
-        const barNode = document.getElementById("progressBar");
-        const reconstructionNode = document.getElementById("reconstructionSlots");
-        const finaleNode = document.getElementById("finalePanel");
-
-        if(countNode) countNode.textContent = `${count} / ${total}`;
-        if(barNode) barNode.textContent = "█".repeat(count) + "░".repeat(total - count);
-
-        document.querySelectorAll("[data-file-id]").forEach(file => {
-            const fileId = file.dataset.fileId;
-            if(!this.isSolved(fileId)) return;
-
-            file.classList.add("file-solved");
-
-            const status = file.querySelector("[data-status]");
-            if(status){
-                status.textContent = "ABGESCHLOSSEN";
-                status.className = "complete";
+        markSolved(fileId, fragment) {
+            localStorage.setItem(this.progressKey(fileId), "true");
+            if (fragment !== undefined && fragment !== null) {
+                localStorage.setItem(this.fragmentKey(fileId), String(fragment));
             }
+        },
 
-            const marker = file.querySelector("[data-marker]");
-            if(marker) marker.textContent = "✓";
+        isSolved(fileId) {
+            return localStorage.getItem(this.progressKey(fileId)) === "true";
+        },
 
-            const fragmentValue = this.getFragment(fileId);
-            const fragmentRow = file.querySelector("[data-fragment-row]");
-            const fragmentNode = file.querySelector("[data-fragment]");
-
-            if(fragmentRow && fragmentValue !== null){
-                fragmentRow.hidden = false;
-                fragmentRow.style.display = "block";
+        getFragment(fileId) {
+            let fragment = localStorage.getItem(this.fragmentKey(fileId));
+            if (fragment === null && this.isSolved(fileId) && KNOWN_FRAGMENTS[fileId]) {
+                fragment = KNOWN_FRAGMENTS[fileId];
+                localStorage.setItem(this.fragmentKey(fileId), fragment);
             }
-            if(fragmentNode && fragmentValue !== null){
-                fragmentNode.textContent = `[ ${fragmentValue} ]`;
-            }
-        });
+            return fragment;
+        },
 
-        if(reconstructionNode){
-            reconstructionNode.innerHTML = "";
-            fragments.forEach((fragment, index) => {
-                const slot = document.createElement("span");
-                slot.className = fragment === null
-                    ? "reconstruction-slot empty"
-                    : "reconstruction-slot filled";
-                slot.textContent = fragment === null ? "_" : fragment;
-                slot.setAttribute("aria-label", `Fragment ${index + 1}: ${fragment === null ? "fehlt" : fragment}`);
-                reconstructionNode.appendChild(slot);
+        solvedCount(total = 10) {
+            let count = 0;
+            for (let i = 1; i <= total; i += 1) {
+                const id = `datei${String(i).padStart(2, "0")}`;
+                if (this.isSolved(id)) count += 1;
+            }
+            return count;
+        },
+
+        getFragments(total = 10) {
+            return Array.from({ length: total }, (_, index) => {
+                const id = `datei${String(index + 1).padStart(2, "0")}`;
+                return this.getFragment(id);
+            });
+        },
+
+        updateArchiveProgress() {
+            const total = 10;
+            const count = this.solvedCount(total);
+            const fragments = this.getFragments(total);
+            const countNode = document.getElementById("progressCount");
+            const barNode = document.getElementById("progressBar");
+            const reconstructionNode = document.getElementById("reconstructionSlots");
+            const finaleNode = document.getElementById("finalePanel");
+
+            if (countNode) countNode.textContent = `${count} / ${total}`;
+            if (barNode) barNode.textContent = "█".repeat(count) + "░".repeat(total - count);
+
+            document.querySelectorAll("[data-file-id]").forEach((file) => {
+                const fileId = file.dataset.fileId;
+                if (!this.isSolved(fileId)) return;
+                file.classList.add("file-solved");
+                const status = file.querySelector("[data-status]");
+                if (status) {
+                    status.textContent = "ABGESCHLOSSEN";
+                    status.className = "complete";
+                }
+                const marker = file.querySelector("[data-marker]");
+                if (marker) marker.textContent = "✓";
+                const value = this.getFragment(fileId);
+                const row = file.querySelector("[data-fragment-row]");
+                const node = file.querySelector("[data-fragment]");
+                if (row && value !== null) {
+                    row.hidden = false;
+                    row.style.display = "block";
+                }
+                if (node && value !== null) node.textContent = `[ ${value} ]`;
+            });
+
+            if (reconstructionNode) {
+                reconstructionNode.innerHTML = "";
+                fragments.forEach((fragment, index) => {
+                    const slot = document.createElement("span");
+                    slot.className = fragment === null ? "reconstruction-slot empty" : "reconstruction-slot filled";
+                    slot.textContent = fragment === null ? "_" : fragment;
+                    slot.setAttribute("aria-label", `Fragment ${index + 1}: ${fragment === null ? "fehlt" : fragment}`);
+                    reconstructionNode.appendChild(slot);
+                });
+            }
+            if (finaleNode) finaleNode.hidden = count !== total;
+        },
+
+        installAdminReset(trigger) {
+            if (!trigger) return;
+            let clicks = 0;
+            let timer;
+            trigger.addEventListener("click", () => {
+                clicks += 1;
+                clearTimeout(timer);
+                timer = setTimeout(() => { clicks = 0; }, 1800);
+                if (clicks < 5) return;
+                clicks = 0;
+                if (!window.confirm("ADMIN: Fortschritt von PROTOKOLL 12 löschen?")) return;
+                Object.keys(localStorage)
+                    .filter((key) => key.startsWith("protokoll12_"))
+                    .forEach((key) => localStorage.removeItem(key));
+                window.location.reload();
             });
         }
-
-        if(finaleNode){
-            finaleNode.hidden = count !== total;
-        }
-    }
-};
+    };
+}());

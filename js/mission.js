@@ -1,8 +1,8 @@
-(function(){
+(function () {
     "use strict";
 
     const config = window.P12_MISSION;
-    if(!config) throw new Error("P12_MISSION configuration is missing.");
+    if (!config) throw new Error("P12_MISSION configuration is missing.");
 
     const nodes = {
         terminal: document.querySelector(".terminal"),
@@ -19,36 +19,27 @@
 
     let stageIndex = 0;
 
-    function currentStage(){
-        return config.stages[stageIndex];
-    }
+    function currentStage() { return config.stages[stageIndex]; }
 
-    function normalize(value, stage){
-        let result = value.trim().toLowerCase();
-        if(stage.normalizeUmlauts){
-            result = result
-                .replace(/ä/g, "ae")
-                .replace(/ö/g, "oe")
-                .replace(/ü/g, "ue")
-                .replace(/ß/g, "ss");
+    function normalize(value, stage) {
+        let result = String(value).trim().toLowerCase();
+        if (stage.normalizeUmlauts) {
+            result = result.replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
         }
-        if(stage.removeWhitespace !== false){
-            result = result.replace(/\s+/g, "");
-        }
+        if (stage.removeWhitespace !== false) result = result.replace(/\s+/g, "");
         return result;
     }
 
-    function resetFeedback(){
+    function resetFeedback() {
         nodes.feedback.className = "feedback";
         nodes.feedback.innerHTML = "";
     }
 
-    function prepareStage(index){
+    function prepareStage(index) {
         stageIndex = index;
         const stage = currentStage();
-
         nodes.answerLabel.innerHTML = `<b>${stage.label}</b>`;
-        nodes.answerHint.textContent = stage.hint;
+        nodes.answerHint.textContent = stage.hint || "";
         nodes.answer.type = stage.inputType || "text";
         nodes.answer.inputMode = stage.inputMode || "text";
         nodes.answer.maxLength = stage.maxLength || 32;
@@ -59,7 +50,7 @@
         resetFeedback();
     }
 
-    function showPuzzleImmediately(){
+    function showPuzzleImmediately() {
         prepareStage(0);
         nodes.output.innerHTML = config.message;
         nodes.answerPanel.style.display = "block";
@@ -67,7 +58,7 @@
         nodes.answer.focus();
     }
 
-    function showSolvedNote(){
+    function showSolvedNote() {
         const fragment = P12.getFragment(config.fileId) || config.fragment;
         const note = document.createElement("div");
         note.className = "fragment layer";
@@ -75,7 +66,7 @@
         nodes.terminal.insertBefore(note, nodes.backRow);
     }
 
-    function completeMission(){
+    function completeMission() {
         P12.markSolved(config.fileId, config.fragment);
         nodes.answer.disabled = true;
         nodes.checkBtn.disabled = true;
@@ -83,43 +74,35 @@
         nodes.feedback.innerHTML = config.successHtml;
     }
 
-    function advanceStage(){
-        const nextIndex = stageIndex + 1;
+    function advanceStage() {
         const transition = currentStage().transition;
-
-        prepareStage(nextIndex);
+        prepareStage(stageIndex + 1);
         nodes.feedback.className = "feedback success";
-
-        if(transition){
+        if (transition) {
             P12.typeHtml(nodes.feedback, transition, () => nodes.answer.focus(), 18);
-        }else{
+        } else {
             nodes.answer.focus();
         }
     }
 
-    function checkAnswer(){
+    function checkAnswer() {
         const stage = currentStage();
         const value = normalize(nodes.answer.value, stage);
-        const accepted = stage.answers.map(answer => normalize(String(answer), stage));
+        const accepted = stage.answers.map((answer) => normalize(answer, stage));
 
-        if(value === ""){
+        if (value === "") {
             nodes.feedback.className = "feedback error";
             nodes.feedback.textContent = "KEINE EINGABE ERKANNT.";
             return;
         }
-
-        if(!accepted.includes(value)){
+        if (!accepted.includes(value)) {
             nodes.feedback.className = "feedback error";
             nodes.feedback.textContent = stage.error;
             nodes.answer.select();
             return;
         }
-
-        if(stageIndex < config.stages.length - 1){
-            advanceStage();
-        }else{
-            completeMission();
-        }
+        if (stageIndex < config.stages.length - 1) advanceStage();
+        else completeMission();
     }
 
     nodes.openBtn.addEventListener("click", () => {
@@ -134,19 +117,20 @@
     });
 
     nodes.checkBtn.addEventListener("click", checkAnswer);
-    nodes.answer.addEventListener("keydown", event => {
-        if(event.key === "Enter") checkAnswer();
+    nodes.answer.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") checkAnswer();
     });
 
     P12.bindTerminalLinks();
+    P12.installAdminReset(document.querySelector(".header-title"));
 
-    if(P12.isSolved(config.fileId)){
+    if (P12.isSolved(config.fileId)) {
         showSolvedNote();
         showPuzzleImmediately();
-    }else{
+    } else {
         P12.playSequence(nodes.output, config.bootLines, () => {
             nodes.openBtn.textContent = "> DATEI ENTSCHLÜSSELN";
             nodes.openBtn.style.display = "inline-block";
         });
     }
-})();
+}());

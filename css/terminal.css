@@ -267,31 +267,3 @@ input{
         grid-template-columns:repeat(5,minmax(34px,1fr));
     }
 }
-
-.answer-panel{
-    margin-top:20px;
-}
-.answer-row{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    flex-wrap:wrap;
-}
-.answer-row input{
-    min-width:180px;
-}
-.feedback.success{
-    margin-top:16px;
-    color:var(--success);
-}
-.feedback.error{
-    margin-top:16px;
-    color:#ff8f8f;
-}
-.feedback .fragment,
-.fragment{
-    margin:14px 0;
-    font-size:1.35rem;
-    font-weight:bold;
-    letter-spacing:.16em;
-}

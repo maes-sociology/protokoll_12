@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROTOKOLL 12 – DATEI 03</title>
-<link rel="stylesheet" href="css/terminal.css?v=7">
+<link rel="stylesheet" href="css/terminal.css?v=8">
 </head>
 <body>
 <main class="terminal">
@@ -23,10 +23,10 @@
     </div>
 
     <section id="answerPanel" class="answer-panel layer">
-        <label for="answer"><b>JAHRESZAHL EINGEBEN</b></label>
-        <p class="small">Gib die vollständig übersetzte Jahreszahl ein.</p>
+        <label id="answerLabel" for="answer"></label>
+        <p id="answerHint" class="small"></p>
         <div class="answer-row">
-            <input id="answer" type="text" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="Jahreszahl">
+            <input id="answer" type="text" autocomplete="off">
             <button id="checkBtn" type="button">&gt; PRÜFEN</button>
         </div>
         <div id="feedback" class="feedback" aria-live="polite"></div>
@@ -37,33 +37,21 @@
     </div>
 </main>
 
-<script src="js/terminal.js?v=7"></script>
+<script src="js/terminal.js?v=8"></script>
 <script>
-const output = document.getElementById("output");
-const openBtn = document.getElementById("openBtn");
-const answerPanel = document.getElementById("answerPanel");
-const answer = document.getElementById("answer");
-const checkBtn = document.getElementById("checkBtn");
-const feedback = document.getElementById("feedback");
-
-const bootLines = [
-    "DATEI 03 WIRD GELADEN ...",
-    "",
-    "QUELLE: < K_ >",
-    "SIGNATUR VERIFIZIERT",
-    "DATENPAKET GEFUNDEN",
-    "",
-    "ZUGRIFF ERFORDERT BESTÄTIGUNG"
-];
-
-const decryptLines = [
-    "ENTSCHLÜSSELUNG GESTARTET ...",
-    "PRÜFE DATENINTEGRITÄT",
-    "KANAL STABIL",
-    "NACHRICHT FREIGEGEBEN"
-];
-
-const message = `Die KI kennt Karten.
+window.P12_MISSION = {
+    fileId: "datei03",
+    fragment: "4",
+    bootLines: [
+        "DATEI 03 WIRD GELADEN ...", "", "QUELLE: < K_ >",
+        "SIGNATUR VERIFIZIERT", "DATENPAKET GEFUNDEN", "",
+        "ZUGRIFF ERFORDERT BESTÄTIGUNG"
+    ],
+    decryptLines: [
+        "ENTSCHLÜSSELUNG GESTARTET ...", "PRÜFE DATENINTEGRITÄT",
+        "KANAL STABIL", "NACHRICHT FREIGEGEBEN"
+    ],
+    message: `Die KI kennt Karten.
 
 Sie kennt Satellitenbilder.
 
@@ -92,79 +80,19 @@ Sie wurde nicht mit unseren Zahlen geschrieben.
 Welche Ziffer für PROTOKOLL 12 wichtig ist,
 erfährst du erst nach der richtigen Eingabe.
 
-<span class="signature">&lt; K_ &gt;</span>`;
-
-openBtn.addEventListener("click", () => {
-    openBtn.style.display = "none";
-    P12.playSequence(output, decryptLines, () => {
-        P12.typeHtml(output, message, () => {
-            answerPanel.style.display = "block";
-            answer.focus();
-        });
-    });
-});
-
-function checkAnswer(){
-    const value = answer.value.trim();
-
-    if(value === "1945"){
-        P12.markSolved("datei03", "4");
-        feedback.className = "feedback success";
-        feedback.innerHTML =
-            `JAHRESZAHL BESTÄTIGT.<div class="fragment">FÜR PROTOKOLL 12 IST NUR DIE ZEHNERSTELLE RELEVANT<strong>4</strong></div>`;
-        answer.disabled = true;
-        checkBtn.disabled = true;
-    }else if(value === ""){
-        feedback.className = "feedback error";
-        feedback.textContent = "KEINE EINGABE ERKANNT.";
-    }else{
-        feedback.className = "feedback error";
-        feedback.textContent = "CODE NICHT AKZEPTIERT. PRÜFE DIE RÖMISCHE ZAHL UND ÜBERSETZE SIE VOLLSTÄNDIG.";
-    }
-}
-
-checkBtn.addEventListener("click", checkAnswer);
-answer.addEventListener("keydown", event => {
-    if(event.key === "Enter") checkAnswer();
-});
-
-P12.bindTerminalLinks();
-
-function showPuzzleImmediately(){
-    output.innerHTML = message;
-    answerPanel.style.display = "block";
-    answer.disabled = false;
-    checkBtn.disabled = false;
-    answer.value = "";
-    feedback.className = "feedback";
-    feedback.innerHTML = "";
-    openBtn.style.display = "none";
-    answer.focus();
-}
-
-if(P12.isSolved("datei03")){
-    const storedFragment = P12.getFragment("datei03") || "4";
-
-    const solvedNote = document.createElement("div");
-    solvedNote.className = "fragment layer";
-    solvedNote.innerHTML =
-        `STATUS: BEREITS ABGESCHLOSSEN – ERNEUTE ANALYSE MÖGLICH
-         <strong>${storedFragment}</strong>`;
-    document.querySelector(".terminal").insertBefore(
-        solvedNote,
-        document.querySelector(".back-row")
-    );
-
-    // Bei einer bereits gelösten Datei das Rätsel ohne Boot-Animation
-    // und ohne zusätzlichen Klick sofort wieder anzeigen.
-    showPuzzleImmediately();
-}else{
-    P12.playSequence(output, bootLines, () => {
-        openBtn.textContent = "> DATEI ENTSCHLÜSSELN";
-        openBtn.style.display = "inline-block";
-    });
-}
-
+<span class="signature">&lt; K_ &gt;</span>`,
+    stages: [{
+        label: "JAHRESZAHL EINGEBEN",
+        hint: "Gib die vollständig übersetzte Jahreszahl ein.",
+        placeholder: "Jahreszahl",
+        inputMode: "numeric",
+        maxLength: 4,
+        answers: ["1945"],
+        error: "CODE NICHT AKZEPTIERT. PRÜFE DIE RÖMISCHE ZAHL UND ÜBERSETZE SIE VOLLSTÄNDIG."
+    }],
+    successHtml: `JAHRESZAHL BESTÄTIGT.<div class="fragment">FÜR PROTOKOLL 12 IST NUR DIE ZEHNERSTELLE RELEVANT<strong>4</strong></div>`
+};
 </script>
+<script src="js/mission.js?v=8"></script>
 </body>
 </html>

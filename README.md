@@ -1,18 +1,13 @@
-# PROTOKOLL 12 – Archiv-Fix
+# PROTOKOLL 12
 
-Ersetze in deinem lokalen GitHub-Projekt mindestens diese beiden Dateien:
+## Änderungen in dieser Version
 
-- index.html
-- datei03.html
+- DATEI 04 enthält jetzt das Rätsel zur Joppie Remoulade.
+- Erste Lösung: `SCHÜTZE` bzw. `SCHUETZE`.
+- Zweite Lösung: Position des Schützen im Tierkreis (`9`).
+- Das gesicherte Fragment ist `[ 9 ]`.
+- DATEI 03 und DATEI 04 verwenden jetzt denselben Aufbau und dieselbe gemeinsame Missionslogik.
+- Die wiederverwendbare Logik liegt in `js/mission.js`; neue Missionen benötigen künftig hauptsächlich eine Konfiguration.
+- Doppelte CSS-Regeln wurden entfernt.
 
-Danach in GitHub Desktop:
-
-1. Commit to main
-2. Push origin
-
-Änderung:
-Der Button „ZURÜCK ZUM ARCHIV“ führt nun zu `index.html#archiv`.
-Die Startseite erkennt diesen Zusatz und zeigt sofort das Missionsarchiv,
-ohne K.s gesamte Nachricht erneut abzuspielen.
-
-Die Ordner `css` und `js` sind unverändert enthalten.
+Die Dateien können direkt in das bestehende GitHub-Pages-Repository kopiert werden.

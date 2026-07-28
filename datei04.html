@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROTOKOLL 12 – DATEI 04</title>
-<link rel="stylesheet" href="css/terminal.css?v=7">
+<link rel="stylesheet" href="css/terminal.css?v=8">
 </head>
 <body>
 <main class="terminal">
@@ -23,10 +23,10 @@
     </div>
 
     <section id="answerPanel" class="answer-panel layer">
-        <label id="answerLabel" for="answer"><b>HÖCHSTE PIZZANUMMER EINGEBEN</b></label>
-        <p id="answerHint" class="small">Gib die höchste Nummer auf der Speisekarte ein.</p>
+        <label id="answerLabel" for="answer"></label>
+        <p id="answerHint" class="small"></p>
         <div class="answer-row">
-            <input id="answer" type="text" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="Nummer">
+            <input id="answer" type="text" autocomplete="off">
             <button id="checkBtn" type="button">&gt; PRÜFEN</button>
         </div>
         <div id="feedback" class="feedback" aria-live="polite"></div>
@@ -37,192 +37,76 @@
     </div>
 </main>
 
-<script src="js/terminal.js?v=7"></script>
+<script src="js/terminal.js?v=8"></script>
 <script>
-const output = document.getElementById("output");
-const openBtn = document.getElementById("openBtn");
-const answerPanel = document.getElementById("answerPanel");
-const answer = document.getElementById("answer");
-const answerLabel = document.getElementById("answerLabel");
-const answerHint = document.getElementById("answerHint");
-const checkBtn = document.getElementById("checkBtn");
-const feedback = document.getElementById("feedback");
+window.P12_MISSION = {
+    fileId: "datei04",
+    fragment: "9",
+    bootLines: [
+        "DATEI 04 WIRD GELADEN ...", "", "QUELLE: < K_ >",
+        "SIGNATUR VERIFIZIERT", "DATENPAKET GEFUNDEN", "",
+        "ZUGRIFF ERFORDERT BESTÄTIGUNG"
+    ],
+    decryptLines: [
+        "ENTSCHLÜSSELUNG GESTARTET ...", "PRÜFE DATENINTEGRITÄT",
+        "KANAL STABIL", "NACHRICHT FREIGEGEBEN"
+    ],
+    message: `Die KI sucht nach Adressen.
 
-let stage = 1;
-
-const bootLines = [
-    "DATEI 04 WIRD GELADEN ...",
-    "",
-    "QUELLE: < K_ >",
-    "SIGNATUR VERIFIZIERT",
-    "DATENPAKET GEFUNDEN",
-    "",
-    "ZUGRIFF ERFORDERT BESTÄTIGUNG"
-];
-
-const decryptLines = [
-    "ENTSCHLÜSSELUNG GESTARTET ...",
-    "PRÜFE DATENINTEGRITÄT",
-    "KANAL STABIL",
-    "NACHRICHT FREIGEGEBEN"
-];
-
-const message = `Die KI kennt Suchmaschinen.
-
-Sie kennt Speisekarten.
-
-Sie kennt Millionen von Einträgen.
-
-Aber sie weiß nicht,
-welcher Ort für die Menschen
-wirklich der beste ist.
+Menschen erkennen,
+dass manche Straßennamen
+mehr verraten als Wegbeschreibungen.
 
 Finde heraus,
-wo viele Weimarer sagen,
-dass es die beste Pizza der Stadt gibt.
+wo man in Weimar
+die Joppie Remoulade
+bekommen kann.
 
-Ein Hinweis:
+Im Namen der Straße
+verbirgt sich
+ein Sternzeichen.
 
-Der gesuchte Ort liegt direkt
-neben einem Eisladen.
+Finde es.
 
-Die Speisekarte findest du,
-wenn du richtig suchst.
+<span class="signature">&lt; K_ &gt;</span>`,
+    stages: [
+        {
+            label: "STERNZEICHEN EINGEBEN",
+            hint: "Welches Sternzeichen verbirgt sich im Namen der Straße?",
+            placeholder: "Sternzeichen",
+            inputMode: "text",
+            maxLength: 12,
+            normalizeUmlauts: true,
+            answers: ["Schütze", "Schuetze"],
+            error: "NICHT BESTÄTIGT. FINDE ZUERST DEN ORT UND UNTERSUCHE DEN NAMEN DER STRASSE.",
+            transition: `SCHÜTZE BESTÄTIGT.
 
-Jede Pizza trägt eine Nummer.
+Die KI erkennt Wörter.
 
-Suche die höchste Nummer.
-
-Gib sie ein.
-
-<span class="signature">&lt; K_ &gt;</span>`;
-
-function prepareStageOne(){
-    stage = 1;
-    answerLabel.innerHTML = "<b>HÖCHSTE PIZZANUMMER EINGEBEN</b>";
-    answerHint.textContent = "Gib die höchste Nummer auf der Speisekarte ein.";
-    answer.placeholder = "Nummer";
-    answer.maxLength = 8;
-    answer.value = "";
-    answer.disabled = false;
-    checkBtn.disabled = false;
-    feedback.className = "feedback";
-    feedback.innerHTML = "";
-}
-
-function showPuzzleImmediately(){
-    prepareStageOne();
-    output.innerHTML = message;
-    answerPanel.style.display = "block";
-    openBtn.style.display = "none";
-    answer.focus();
-}
-
-openBtn.addEventListener("click", () => {
-    openBtn.style.display = "none";
-    P12.playSequence(output, decryptLines, () => {
-        P12.typeHtml(output, message, () => {
-            prepareStageOne();
-            answerPanel.style.display = "block";
-            answer.focus();
-        });
-    });
-});
-
-function normalize(value){
-    return value.trim().replace(/\s+/g, "");
-}
-
-function showStageTwo(){
-    stage = 2;
-    answer.value = "";
-    answer.maxLength = 2;
-    answer.placeholder = "Quersumme";
-    answerLabel.innerHTML = "<b>QUERSUMME EINGEBEN</b>";
-    answerHint.textContent = "Addiere die einzelnen Ziffern der bestätigten Nummer.";
-    feedback.className = "feedback success";
-
-    const stageTwoMessage = `405 BESTÄTIGT.
-
-Die KI sammelt Zahlen.
 Menschen erkennen Zusammenhänge.
 
-Bilde die Quersumme:
+Der Schütze
+ist nicht nur ein Wort.
 
-4 + 0 + 5 = ?
+An welcher Stelle
+steht dieses Sternzeichen
+im Tierkreis?
 
-Gib das Ergebnis ein.`;
-
-    P12.typeHtml(feedback, stageTwoMessage, () => {
-        answer.focus();
-    }, 18);
-}
-
-function solve(){
-    P12.markSolved("datei04", "9");
-    answer.disabled = true;
-    checkBtn.disabled = true;
-    feedback.className = "feedback success";
-    feedback.innerHTML =
-        `RICHTIG.<div class="fragment">FRAGMENT GESICHERT<strong>9</strong></div><span class="signature">&lt; K_ &gt;</span>`;
-}
-
-function checkAnswer(){
-    const value = normalize(answer.value);
-
-    if(value === ""){
-        feedback.className = "feedback error";
-        feedback.textContent = "KEINE EINGABE ERKANNT.";
-        return;
-    }
-
-    if(stage === 1){
-        if(value === "405"){
-            showStageTwo();
-        }else{
-            feedback.className = "feedback error";
-            feedback.textContent = "NICHT BESTÄTIGT. PRÜFE DIE HÖCHSTE NUMMER AUF DER SPEISEKARTE.";
-            answer.select();
+Gib die Zahl ein.`
+        },
+        {
+            label: "POSITION IM TIERKREIS EINGEBEN",
+            hint: "An welcher Stelle steht der Schütze im Tierkreis?",
+            placeholder: "Position",
+            inputMode: "numeric",
+            maxLength: 2,
+            answers: ["9"],
+            error: "POSITION NICHT KORREKT. ZÄHLE DIE STERNZEICHEN IN IHRER REIHENFOLGE."
         }
-        return;
-    }
-
-    if(value === "9"){
-        solve();
-    }else{
-        feedback.className = "feedback error";
-        feedback.textContent = "QUERSUMME NICHT KORREKT. ADDIERE DIE EINZELNEN ZIFFERN.";
-        answer.select();
-    }
-}
-
-checkBtn.addEventListener("click", checkAnswer);
-answer.addEventListener("keydown", event => {
-    if(event.key === "Enter") checkAnswer();
-});
-
-P12.bindTerminalLinks();
-
-if(P12.isSolved("datei04")){
-    const storedFragment = P12.getFragment("datei04") || "9";
-
-    const solvedNote = document.createElement("div");
-    solvedNote.className = "fragment layer";
-    solvedNote.innerHTML =
-        `STATUS: BEREITS ABGESCHLOSSEN – ERNEUTE ANALYSE MÖGLICH
-         <strong>${storedFragment}</strong>`;
-    document.querySelector(".terminal").insertBefore(
-        solvedNote,
-        document.querySelector(".back-row")
-    );
-
-    showPuzzleImmediately();
-}else{
-    P12.playSequence(output, bootLines, () => {
-        openBtn.textContent = "> DATEI ENTSCHLÜSSELN";
-        openBtn.style.display = "inline-block";
-    });
-}
+    ],
+    successHtml: `RICHTIG.<div class="fragment">FRAGMENT GESICHERT<strong>9</strong></div><span class="signature">&lt; K_ &gt;</span>`
+};
 </script>
+<script src="js/mission.js?v=8"></script>
 </body>
 </html>

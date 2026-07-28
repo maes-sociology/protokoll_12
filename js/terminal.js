@@ -7,6 +7,12 @@
         datei05: "9"
     };
 
+    const ARCHIVE_METADATA = {
+        datei03: { title: "DATEI 03", category: "BEOBACHTUNG / NETZRECHERCHE" },
+        datei04: { title: "DATEI 04", category: "RECHERCHE / MUSTERERKENNUNG" },
+        datei05: { title: "DATEI 05", category: "ORTSKENNTNIS / SPRACHMUSTER" }
+    };
+
     window.P12 = {
         playSequence(output, lines, done, delay = 480) {
             output.innerHTML = "";
@@ -156,22 +162,39 @@
 
             document.querySelectorAll("[data-file-id]").forEach((file) => {
                 const fileId = file.dataset.fileId;
-                if (!this.isSolved(fileId)) return;
-                file.classList.add("file-solved");
+                const metadata = ARCHIVE_METADATA[fileId];
+
+                // Offene Missionskarten werden immer aus derselben Vorlage aufgebaut.
+                // Dadurch bleiben DATEI 03, 04 und 05 auch nach späteren Änderungen identisch.
+                if (metadata) {
+                    file.innerHTML = `
+                        <div class="file-title">${metadata.title} <span class="file-marker" data-marker></span></div>
+                        <div class="file-meta">KATEGORIE: ${metadata.category}</div>
+                        <div class="file-meta">STATUS: <span class="open" data-status>OFFEN</span></div>
+                        <div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div>
+                    `;
+                }
+
+                file.classList.toggle("file-solved", this.isSolved(fileId));
                 const status = file.querySelector("[data-status]");
+                const marker = file.querySelector("[data-marker]");
+                const row = file.querySelector("[data-fragment-row]");
+                const node = file.querySelector("[data-fragment]");
+
+                if (!this.isSolved(fileId)) {
+                    if (marker) marker.textContent = "";
+                    if (row) row.hidden = true;
+                    return;
+                }
+
                 if (status) {
                     status.textContent = "ABGESCHLOSSEN";
                     status.className = "complete";
                 }
-                const marker = file.querySelector("[data-marker]");
                 if (marker) marker.textContent = "✓";
+
                 const value = this.getFragment(fileId);
-                const row = file.querySelector("[data-fragment-row]");
-                const node = file.querySelector("[data-fragment]");
-                if (row && value !== null) {
-                    row.hidden = false;
-                    row.style.display = "block";
-                }
+                if (row && value !== null) row.hidden = false;
                 if (node && value !== null) node.textContent = `[ ${value} ]`;
             });
 

@@ -15,3 +15,9 @@
 ## Versteckter Admin-Reset
 
 Klicke innerhalb von etwa zwei Sekunden fünfmal auf die Überschrift `PROTOKOLL 12 // DATEI XX` oder im Archiv auf `MISSIONSARCHIV // PROTOKOLL 12`. Nach einer Bestätigung werden nur localStorage-Einträge gelöscht, die mit `protokoll12_` beginnen.
+
+
+## Version 1.0.1
+- Archivkarten DATEI 03–05 werden aus einer gemeinsamen Vorlage erzeugt.
+- DATEI 05 hat nach Abschluss exakt dieselbe Struktur wie DATEI 03 und 04.
+- Cache-Version der CSS- und JavaScript-Dateien wurde erhöht.

@@ -108,12 +108,13 @@ button:focus,input:focus,.terminal-button:focus{
     border:1px solid var(--muted);
     background:#0d1110;
     padding:14px;
-    min-height:94px;
+    min-height:106px;
     color:var(--text);
     text-decoration:none;
 }
 .file:hover{background:#10201b;border-color:var(--text)}
 .file-title{font-weight:bold;margin-bottom:8px}
+.file-meta + .file-meta{margin-top:2px}
 .file-meta{color:var(--muted);font-size:.9rem}
 .locked{color:var(--danger)}
 .open{color:var(--success)}

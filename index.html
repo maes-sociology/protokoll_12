@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROTOKOLL 12</title>
-<link rel="stylesheet" href="css/terminal.css?v=12">
+<link rel="stylesheet" href="css/terminal.css?v=13">
 </head>
 <body>
 <main class="terminal">
@@ -33,7 +33,12 @@
                 <div class="file-meta">STATUS: <span class="open" data-status>OFFEN</span></div>
                 <div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div>
             </a>
-            <div class="file" data-file-id="datei02"><div class="file-title">DATEI 02 <span class="file-marker" data-marker></span></div><div class="file-meta">STATUS: <span class="locked" data-status>VERSCHLÜSSELT</span></div><div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div></div>
+            <a href="datei02.html" class="file" data-terminal-link data-file="DATEI 02" data-file-id="datei02">
+                <div class="file-title">DATEI 02 <span class="file-marker" data-marker></span></div>
+                <div class="file-meta">KATEGORIE: ORTSKENNTNIS / ERINNERUNG</div>
+                <div class="file-meta">STATUS: <span class="open" data-status>OFFEN</span></div>
+                <div class="fragment-row" data-fragment-row hidden>FRAGMENT: <span class="fragment-value" data-fragment></span></div>
+            </a>
 
             <a href="datei03.html" class="file" data-terminal-link data-file="DATEI 03" data-file-id="datei03">
                 <div class="file-title">DATEI 03 <span class="file-marker" data-marker></span></div>
@@ -74,7 +79,7 @@
     </section>
 </main>
 
-<script src="js/terminal.js?v=12"></script>
+<script src="js/terminal.js?v=13"></script>
 <script>
 const output = document.getElementById("output");
 const btn = document.getElementById("nextBtn");

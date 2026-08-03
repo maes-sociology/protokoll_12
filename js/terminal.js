@@ -3,6 +3,7 @@
 
     const KNOWN_FRAGMENTS = {
         datei01: "N",
+        datei02: "G",
         datei03: "4",
         datei04: "9",
         datei05: "9"
@@ -10,6 +11,7 @@
 
     const ARCHIVE_METADATA = {
         datei01: { title: "DATEI 01", category: "ORTSKENNTNIS / VERBINDUNGEN" },
+        datei02: { title: "DATEI 02", category: "ORTSKENNTNIS / ERINNERUNG" },
         datei03: { title: "DATEI 03", category: "BEOBACHTUNG / NETZRECHERCHE" },
         datei04: { title: "DATEI 04", category: "RECHERCHE / MUSTERERKENNUNG" },
         datei05: { title: "DATEI 05", category: "ORTSKENNTNIS / SPRACHMUSTER" }

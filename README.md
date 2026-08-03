@@ -1,31 +1,21 @@
-# PROTOKOLL 12 – Version 1.1 / DATEI 01
+# PROTOKOLL 12 – Version 1.2 / DATEI 02
 
-Diese Version ergänzt DATEI 01 und baut auf der bisherigen Version 1.0.1 auf.
+Neu:
 
-## Neue Mission
+- DATEI 02 ist im Missionsarchiv freigeschaltet.
+- Kategorie: ORTSKENNTNIS / ERINNERUNG
+- Rätsel zum beliebten Kinderbrunnen in Weimar.
+- Erste Antwort: GOETHE
+- Zweite Antwort: G
+- Gespeichertes Fragment: [ G ]
+- Gleiches Layout und dieselbe gemeinsame Missionslogik wie DATEI 01, 03, 04 und 05.
 
-- DATEI 01: Fahrradgeschäft / Geschwistergeschäft
-- akzeptierte erste Antworten:
-  - NÄHMASCHINE
-  - NÄHMASCHINEN
-  - NAEHMASCHINE
-  - NAEHMASCHINEN
-- zweiter Schritt: erster Buchstabe N
-- Fragment: [ N ]
+## Hochladen
 
-## Upload
-
-Ersetze den Inhalt deines lokalen Projektordners durch den Inhalt dieses Ordners oder kopiere mindestens:
-
-- index.html
-- datei01.html
-- js/terminal.js
-- js/missions/01.js
-
-Die übrigen Dateien sind vollständig enthalten, damit du einen konsistenten Projektstand hast.
+Den Inhalt dieses Ordners in dein lokales GitHub-Projekt kopieren und vorhandene Dateien ersetzen.
 
 Danach in GitHub Desktop:
 
 1. Commit to main
 2. Push origin
-3. Website einmal neu laden
+3. Website mit Cmd+Shift+R oder Strg+F5 neu laden

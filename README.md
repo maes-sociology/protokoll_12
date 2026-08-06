@@ -1,21 +1,19 @@
-# PROTOKOLL 12 – Version 1.2 / DATEI 02
+# PROTOKOLL 12 – Finale-Modul
 
-Neu:
+Lege deinen Film hier ab:
 
-- DATEI 02 ist im Missionsarchiv freigeschaltet.
-- Kategorie: ORTSKENNTNIS / ERINNERUNG
-- Rätsel zum beliebten Kinderbrunnen in Weimar.
-- Erste Antwort: GOETHE
-- Zweite Antwort: G
-- Gespeichertes Fragment: [ G ]
-- Gleiches Layout und dieselbe gemeinsame Missionslogik wie DATEI 01, 03, 04 und 05.
+video/finale-teil1.mp4
 
-## Hochladen
+Dann kopiere diese Dateien und Ordner in dein bestehendes GitHub-Projekt:
 
-Den Inhalt dieses Ordners in dein lokales GitHub-Projekt kopieren und vorhandene Dateien ersetzen.
+- finale.html
+- css/finale.css
+- js/finale.js
+- video/finale-teil1.mp4
 
-Danach in GitHub Desktop:
-
+Danach:
 1. Commit to main
 2. Push origin
-3. Website mit Cmd+Shift+R oder Strg+F5 neu laden
+3. Öffne /finale.html auf deiner GitHub-Pages-Seite
+
+Das Löschen ist nur Teil der Inszenierung. Es werden keine GitHub-Dateien entfernt.

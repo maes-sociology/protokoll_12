@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROTOKOLL 12 – SYSTEMKERN</title>
+<link rel="stylesheet" href="css/finale.css?v=1">
+</head>
+<body>
+<main class="terminal">
+<header class="header">
+<div><div class="header-title">PROTOKOLL 12 // SYSTEMKERN</div><div class="small">VERBINDUNG: VERSCHLÜSSELT</div></div>
+<div id="systemStatus" class="header-status">STATUS: INITIALISIERUNG</div>
+</header>
+
+<section id="bootStage" class="stage">
+<div id="bootOutput" class="terminal-output"></div>
+<button id="startTransmissionBtn" class="terminal-button" hidden>&gt; ÜBERTRAGUNG STARTEN</button>
+</section>
+
+<section id="videoStage" class="stage" hidden>
+<video id="finaleVideo" playsinline preload="metadata">
+<source src="video/finale-teil1.mp4" type="video/mp4">
+</video>
+<div id="videoError" class="message error" hidden>VIDEO NICHT GEFUNDEN.<br><br>Lege <b>finale-teil1.mp4</b> in den Ordner <b>video</b>.</div>
+</section>
+
+<section id="decisionStage" class="stage" hidden>
+<div id="decisionIntro" class="terminal-output"></div>
+<div id="deleteDialog" class="delete-dialog" hidden>
+<div class="warning-title">WARNUNG</div>
+<p>PROTOKOLL 12 kann dauerhaft gelöscht werden.</p>
+<p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
+<div class="separator"></div>
+<p>&gt; Entscheidung erforderlich</p>
+<div class="button-row">
+<button id="cancelDeleteBtn" class="terminal-button secondary">[ ABBRECHEN ]</button>
+<button id="confirmDeleteBtn" class="terminal-button danger">[ ENDGÜLTIG LÖSCHEN ]</button>
+</div>
+<div id="cancelMessage" class="message warning" hidden>VORGANG ABGEBROCHEN.<br>DER ZUGANG BLEIBT OFFEN.</div>
+</div>
+</section>
+
+<section id="deleteStage" class="stage" hidden><div id="deleteOutput" class="terminal-output"></div></section>
+
+<section id="afterDeleteStage" class="stage" hidden>
+<div id="afterDeleteOutput" class="terminal-output"></div>
+<button id="continueBtn" class="terminal-button" hidden>&gt; NEUE NACHRICHT ÖFFNEN</button>
+<div id="part2Placeholder" class="message" hidden>SIGNAL WIEDERHERGESTELLT.<br><br>Der zweite Film kann später als<br><b>video/finale-teil2.mp4</b><br>eingebunden werden.</div>
+</section>
+</main>
+<script src="js/finale.js?v=1"></script>
+</body>
+</html>

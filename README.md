@@ -1,38 +1,30 @@
-# PROTOKOLL 12 – Finale Cleanup
+# PROTOKOLL 12 – Finale-Zugang
 
-Neue Videos:
+QR-Code im Eisladen → `zugang.html`
 
-Video 1:
-https://youtu.be/vS7MWTPu1gw
+Die Kinder tragen dort die zehn Fragmente aus DATEI 01–10 ein.
+Erst wenn alle zehn stimmen, wird `finale.html` freigeschaltet.
 
-Video 2:
-https://youtu.be/BfsF_5ogz8c
+Aktuell bekannte Fragmente:
+01 = N
+02 = G
+03 = 4
+04 = 9
+05 = 9
 
-## Ablauf
+06–10 stehen in `js/zugang.js` noch als `___`.
 
-1. Bootsequenz
-2. Video 1
-3. Löschabfrage
-4. Löschanimation
-5. Wiederherstellungssequenz
-6. Video 2
-7. Endbildschirm: KEINE DATEN VORHANDEN
+Sobald die fünf übrigen Rätsel feststehen, ändere dort nur:
 
-Der Cursor verschwindet nach fünf Sekunden.
+const EXPECTED_FRAGMENTS = [
+  "N","G","4","9","9",
+  "...","...","...","...","..."
+];
 
-## Installation
+Optionaler Schutz für finale.html:
+Füge direkt vor den bestehenden Scripts ein:
 
-Ersetze im GitHub-Projekt:
+<script src="js/finale-guard.js?v=1"></script>
 
-- finale.html
-- css/finale.css
-- js/finale.js
-
-Danach:
-1. Commit to main
-2. Push origin
-3. finale.html mit Cmd+Shift+R / Strg+F5 neu laden
-
-Wichtig:
-Der Fehler, bei dem „KEINE DATEN VORHANDEN“ bereits zu Beginn erschien,
-ist durch `[hidden]{display:none !important;}` behoben.
+Dann wird ein direkter Aufruf von finale.html auf zugang.html zurückgeleitet,
+solange die richtige Kombination noch nicht eingegeben wurde.

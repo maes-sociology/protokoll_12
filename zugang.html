@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROTOKOLL 12 – REKONSTRUKTION</title>
+<link rel="stylesheet" href="css/zugang.css?v=1">
+</head>
+<body>
+<main class="terminal">
+  <header class="header">
+    <div>
+      <div class="header-title">PROTOKOLL 12 // REKONSTRUKTION</div>
+      <div class="small">EXTERNER ZUGANGSPUNKT</div>
+    </div>
+    <div id="status" class="header-status">STATUS: GESPERRT</div>
+  </header>
+
+  <section id="introStage" class="stage">
+    <div id="introOutput" class="terminal-output" aria-live="polite"></div>
+    <button id="openBtn" class="terminal-button" type="button" hidden>
+      &gt; REKONSTRUKTION STARTEN
+    </button>
+  </section>
+
+  <section id="codeStage" class="stage" hidden>
+    <div class="instruction">
+      <p>ZEHN FRAGMENTE ERFORDERLICH.</p>
+      <p>Tragt die Lösungen in der Reihenfolge der Dateien 01–10 ein.</p>
+      <p class="small">Das System meldet nicht, welches Fragment falsch ist.</p>
+    </div>
+
+    <form id="codeForm" autocomplete="off">
+      <div class="code-grid">
+        <label class="code-cell"><span>DATEI 01</span><input id="code01" data-index="0" type="text" maxlength="24" autocapitalize="characters"></label>
+        <label class="code-cell"><span>DATEI 02</span><input id="code02" data-index="1" type="text" maxlength="24" autocapitalize="characters"></label>
+        <label class="code-cell"><span>DATEI 03</span><input id="code03" data-index="2" type="text" maxlength="24" autocapitalize="characters"></label>
+        <label class="code-cell"><span>DATEI 04</span><input id="code04" data-index="3" type="text" maxlength="24" autocapitalize="characters"></label>
+        <label class="code-cell"><span>DATEI 05</span><input id="code05" data-index="4" type="text" maxlength="24" autocapitalize="characters"></label>
+        <label class="code-cell"><span>DATEI 06</span><input id="code06" data-index="5" type="text" maxlength="24" autocapitalize="characters"></label>
+        <label class="code-cell"><span>DATEI 07</span><input id="code07" data-index="6" type="text" maxlength="24" autocapitalize="characters"></label>
+        <label class="code-cell"><span>DATEI 08</span><input id="code08" data-index="7" type="text" maxlength="24" autocapitalize="characters"></label>
+        <label class="code-cell"><span>DATEI 09</span><input id="code09" data-index="8" type="text" maxlength="24" autocapitalize="characters"></label>
+        <label class="code-cell"><span>DATEI 10</span><input id="code10" data-index="9" type="text" maxlength="24" autocapitalize="characters"></label>
+      </div>
+
+      <button id="verifyBtn" class="terminal-button" type="submit">
+        &gt; FRAGMENTE PRÜFEN
+      </button>
+    </form>
+
+    <div id="feedback" class="feedback" aria-live="polite"></div>
+  </section>
+
+  <section id="successStage" class="stage success-stage" hidden>
+    <div id="successOutput" class="terminal-output" aria-live="polite"></div>
+    <button id="finaleBtn" class="terminal-button" type="button" hidden>
+      &gt; PROTOKOLL 12 ÖFFNEN
+    </button>
+  </section>
+</main>
+
+<script src="js/zugang.js?v=1"></script>
+</body>
+</html>

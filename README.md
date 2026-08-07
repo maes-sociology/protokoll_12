@@ -28,3 +28,23 @@ Füge direkt vor den bestehenden Scripts ein:
 
 Dann wird ein direkter Aufruf von finale.html auf zugang.html zurückgeleitet,
 solange die richtige Kombination noch nicht eingegeben wurde.
+
+
+## Testmodus
+
+Für Tests kannst du in alle zehn Eingabefelder einfach `42` eintragen.
+
+Also:
+
+01 = 42
+02 = 42
+03 = 42
+04 = 42
+05 = 42
+06 = 42
+07 = 42
+08 = 42
+09 = 42
+10 = 42
+
+Dann wird das Finale freigeschaltet, auch solange die echten Fragmente 06–10 noch nicht feststehen.

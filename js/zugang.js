@@ -41,13 +41,17 @@ form.addEventListener("submit",event=>{
     return;
   }
 
-  if(EXPECTED_FRAGMENTS.some(v=>v==="___")){
+  // TESTMODUS:
+  // Wenn in allen zehn Feldern "42" steht, wird das Finale ebenfalls freigeschaltet.
+  const testMode = values.every(value => value === "42");
+
+  if(!testMode && EXPECTED_FRAGMENTS.some(v=>v==="___")){
     feedback.className="feedback warning";
     feedback.textContent="SYSTEMKONFIGURATION NOCH NICHT VOLLSTÄNDIG. FRAGMENTE 06–10 MÜSSEN NOCH FESTGELEGT WERDEN.";
     return;
   }
 
-  const correct=values.every((value,index)=>value===normalize(EXPECTED_FRAGMENTS[index]));
+  const correct = testMode || values.every((value,index)=>value===normalize(EXPECTED_FRAGMENTS[index]));
 
   if(!correct){
     feedback.className="feedback error";

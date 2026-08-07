@@ -1,212 +1,261 @@
-:root{
-    --bg:#020403;
-    --panel:#07100d;
-    --text:#70ffd2;
-    --muted:#368b72;
-    --border:#20b98d;
-    --danger:#ff607c;
-    --warning:#ffd36a;
+const VIDEO_1_ID = "vS7MWTPu1gw";
+const VIDEO_2_ID = "BfsF_5ogz8c";
+
+const stageIds = [
+  "bootStage",
+  "video1Stage",
+  "decisionStage",
+  "deleteStage",
+  "reconnectStage",
+  "video2Stage",
+  "finalStage"
+];
+
+const el = id => document.getElementById(id);
+const systemStatus = el("systemStatus");
+
+let player1 = null;
+let player2 = null;
+let player1Ready = false;
+let player2Ready = false;
+let deleteScreenShown = false;
+let secondVideoStarted = false;
+
+function hideAllStages(){
+  stageIds.forEach(id => {
+    el(id).hidden = true;
+  });
 }
 
-*{box-sizing:border-box}
+function playLines(target, lines, done, delay = 520){
+  target.innerHTML = "";
+  let index = 0;
 
-html{background:var(--bg)}
+  function next(){
+    if(index < lines.length){
+      target.textContent += lines[index] + "\n";
+      index += 1;
+      setTimeout(next, delay);
+      return;
+    }
 
-body{
-    margin:0;
-    min-height:100vh;
-    padding:18px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:
-        radial-gradient(circle at center,rgba(28,100,78,.08),transparent 55%),
-        var(--bg);
-    color:var(--text);
-    font-family:Consolas,"Courier New",monospace;
+    target.innerHTML += "\n<span class='cursor'>█</span>";
+    setTimeout(done, 650);
+  }
+
+  next();
 }
 
-.terminal{
-    width:min(980px,96vw);
-    min-height:620px;
-    padding:28px;
-    position:relative;
-    overflow:hidden;
-    background:var(--panel);
-    border:1px solid var(--border);
-    box-shadow:
-        0 0 34px rgba(0,255,180,.14),
-        inset 0 0 50px rgba(0,0,0,.35);
+window.onYouTubeIframeAPIReady = function(){
+  player1 = new YT.Player("youtubePlayer1", {
+    videoId: VIDEO_1_ID,
+    playerVars: {
+      playsinline: 1,
+      controls: 1,
+      rel: 0,
+      modestbranding: 1,
+      fs: 1,
+      iv_load_policy: 3
+    },
+    events: {
+      onReady(){
+        player1Ready = true;
+      },
+      onStateChange(event){
+        if(event.data === YT.PlayerState.ENDED){
+          showDeleteDecision();
+        }
+      },
+      onError(error){
+        console.error("Video 1 error:", error.data);
+        el("video1Error").hidden = false;
+        systemStatus.textContent = "STATUS: VIDEOFEHLER";
+      }
+    }
+  });
+
+  player2 = new YT.Player("youtubePlayer2", {
+    videoId: VIDEO_2_ID,
+    playerVars: {
+      playsinline: 1,
+      controls: 0,
+      rel: 0,
+      modestbranding: 1,
+      fs: 1,
+      iv_load_policy: 3
+    },
+    events: {
+      onReady(){
+        player2Ready = true;
+      },
+      onStateChange(event){
+        if(event.data === YT.PlayerState.ENDED){
+          showFinalMessage();
+        }
+      },
+      onError(error){
+        console.error("Video 2 error:", error.data);
+        el("video2Error").hidden = false;
+        systemStatus.textContent = "STATUS: VIDEOFEHLER";
+      }
+    }
+  });
+};
+
+playLines(
+  el("bootOutput"),
+  [
+    "SYSTEMKERN WIRD INITIALISIERT ...",
+    "",
+    "VERSCHLÜSSELTER KANAL GEFUNDEN",
+    "SIGNATUR: < K_ >",
+    "DATENSTROM VERIFIZIERT",
+    "",
+    "EINE AUFZEICHNUNG WURDE GEFUNDEN"
+  ],
+  () => {
+    el("startTransmissionBtn").hidden = false;
+    systemStatus.textContent = "STATUS: BEREIT";
+  }
+);
+
+el("startTransmissionBtn").addEventListener("click", () => {
+  if(!player1Ready || !player1){
+    el("loadingMessage").hidden = false;
+    return;
+  }
+
+  el("loadingMessage").hidden = true;
+  hideAllStages();
+  el("video1Stage").hidden = false;
+  systemStatus.textContent = "STATUS: ÜBERTRAGUNG AKTIV";
+
+  player1.playVideo();
+});
+
+function showDeleteDecision(){
+  if(deleteScreenShown) return;
+  deleteScreenShown = true;
+
+  hideAllStages();
+  el("decisionStage").hidden = false;
+  systemStatus.textContent = "STATUS: ENTSCHEIDUNG ERFORDERLICH";
+
+  playLines(
+    el("decisionIntro"),
+    [
+      "ÜBERTRAGUNG BEENDET",
+      "",
+      "ANWEISUNG EMPFANGEN",
+      "SYSTEMKERN WARTET AUF BESTÄTIGUNG ..."
+    ],
+    () => {
+      el("deleteDialog").hidden = false;
+    }
+  );
 }
 
-.terminal::after{
-    content:"";
-    pointer-events:none;
-    position:absolute;
-    inset:0;
-    background:repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,.018) 0,
-        rgba(255,255,255,.018) 1px,
-        transparent 1px,
-        transparent 4px
+el("cancelDeleteBtn").addEventListener("click", () => {
+  const button = el("cancelDeleteBtn");
+  const message = el("cancelMessage");
+
+  message.hidden = false;
+  button.disabled = true;
+
+  setTimeout(() => {
+    message.innerHTML =
+      "ABBRUCH NICHT EMPFOHLEN.<br>" +
+      "DER ZUGANG BLEIBT GEFÄHRDET.<br><br>" +
+      "&gt; ENTSCHEIDUNG ERNEUT PRÜFEN";
+
+    button.disabled = false;
+  }, 1100);
+});
+
+el("confirmDeleteBtn").addEventListener("click", () => {
+  localStorage.setItem("protokoll12_delete_confirmed", "true");
+
+  hideAllStages();
+  el("deleteStage").hidden = false;
+  systemStatus.textContent = "STATUS: LÖSCHUNG AKTIV";
+
+  playLines(
+    el("deleteOutput"),
+    [
+      "> AUTHENTIFIZIERUNG ...",
+      "MASTER KEY GEFUNDEN",
+      "",
+      "> DELETE protocol12.sys",
+      "OK",
+      "",
+      "> REMOVE access_keys.db",
+      "OK",
+      "",
+      "> REMOVE archive.db",
+      "OK",
+      "",
+      "> REMOVE network.key",
+      "OK",
+      "",
+      "> PURGE memory_cache",
+      "OK",
+      "",
+      "> DELETE K",
+      "ERROR: PROCESS PROTECTED",
+      "",
+      "LÖSCHVORGANG ABGESCHLOSSEN"
+    ],
+    showReconnect,
+    430
+  );
+});
+
+function showReconnect(){
+  setTimeout(() => {
+    hideAllStages();
+    el("reconnectStage").hidden = false;
+    systemStatus.textContent = "STATUS: SIGNAL VERLOREN";
+
+    playLines(
+      el("reconnectOutput"),
+      [
+        "PROTOKOLL 12 WURDE GELÖSCHT",
+        "",
+        "SIGNAL VERLOREN ...",
+        "",
+        "NEUES DATENPAKET ERKANNT",
+        "",
+        "VERBINDUNG WIRD WIEDERHERGESTELLT ..."
+      ],
+      startSecondVideo,
+      650
     );
-    opacity:.24;
+  }, 1600);
 }
 
-.header,.stage{
-    position:relative;
-    z-index:1;
+function startSecondVideo(){
+  if(secondVideoStarted) return;
+
+  if(!player2Ready || !player2){
+    setTimeout(startSecondVideo, 350);
+    return;
+  }
+
+  secondVideoStarted = true;
+
+  hideAllStages();
+  el("video2Stage").hidden = false;
+  systemStatus.textContent = "STATUS: ZWEITE ÜBERTRAGUNG";
+
+  player2.playVideo();
 }
 
-.header{
-    display:flex;
-    justify-content:space-between;
-    gap:18px;
-    padding-bottom:14px;
-    margin-bottom:24px;
-    border-bottom:1px solid var(--border);
-}
+function showFinalMessage(){
+  hideAllStages();
+  el("finalStage").hidden = false;
+  systemStatus.textContent = "STATUS: LEER";
 
-.header-title{font-weight:bold}
-.header-status{color:var(--muted);text-align:right}
-.small{color:var(--muted);font-size:.92rem}
-
-.stage{min-height:500px}
-
-.terminal-output{
-    min-height:390px;
-    white-space:pre-wrap;
-    line-height:1.65;
-}
-
-.terminal-button{
-    display:inline-block;
-    margin-top:18px;
-    padding:12px 18px;
-    color:var(--text);
-    background:#0a1411;
-    border:1px solid var(--text);
-    font:inherit;
-    cursor:pointer;
-}
-
-.terminal-button:hover{background:#123229}
-
-.terminal-button:focus{
-    outline:2px solid var(--text);
-    outline-offset:3px;
-}
-
-.terminal-button:disabled{
-    cursor:not-allowed;
-    opacity:.55;
-}
-
-.terminal-button.secondary{
-    color:var(--muted);
-    border-color:var(--muted);
-}
-
-.terminal-button.danger{
-    color:var(--danger);
-    border-color:var(--danger);
-}
-
-.terminal-button.danger:hover{
-    background:rgba(255,96,124,.1);
-}
-
-.button-row{
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
-}
-
-.video-frame{
-    width:100%;
-    aspect-ratio:16 / 9;
-    background:#000;
-    border:1px solid var(--border);
-    box-shadow:0 0 28px rgba(0,255,180,.12);
-    overflow:hidden;
-}
-
-#youtubePlayer,
-#youtubePlayer iframe{
-    width:100%;
-    height:100%;
-    display:block;
-}
-
-.delete-dialog{
-    max-width:720px;
-    padding:24px;
-    border:1px solid var(--danger);
-    background:rgba(255,96,124,.035);
-}
-
-.warning-title{
-    color:var(--danger);
-    font-size:1.2rem;
-    font-weight:bold;
-    letter-spacing:.15em;
-}
-
-.separator{
-    margin:22px 0;
-    border-top:1px dashed var(--muted);
-}
-
-.message{
-    margin-top:22px;
-    padding:18px;
-    border:1px solid var(--border);
-    line-height:1.6;
-}
-
-.message.error{
-    color:var(--danger);
-    border-color:var(--danger);
-}
-
-.message.warning{
-    color:var(--warning);
-    border-color:var(--warning);
-}
-
-.cursor{animation:blink 1s infinite}
-
-@keyframes blink{
-    50%{opacity:0}
-}
-
-@media(max-width:650px){
-    body{padding:10px}
-
-    .terminal{
-        width:100%;
-        min-height:100vh;
-        padding:18px;
-    }
-
-    .header{display:block}
-
-    .header-status{
-        margin-top:8px;
-        text-align:left;
-    }
-
-    .stage{min-height:470px}
-
-    .terminal-output{
-        min-height:360px;
-        font-size:15px;
-    }
-
-    .button-row{display:block}
-
-    .button-row .terminal-button{
-        width:100%;
-    }
+  setTimeout(() => {
+    el("finalCursor").style.display = "none";
+  }, 5000);
 }

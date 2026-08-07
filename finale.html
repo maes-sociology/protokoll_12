@@ -4,58 +4,92 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROTOKOLL 12 – SYSTEMKERN</title>
-<link rel="stylesheet" href="css/finale.css?v=4">
+<link rel="stylesheet" href="css/finale.css?v=5">
 </head>
 <body>
 <main class="terminal">
-<header class="header">
-<div><div class="header-title">PROTOKOLL 12 // SYSTEMKERN</div><div class="small">VERBINDUNG: VERSCHLÜSSELT</div></div>
-<div id="systemStatus" class="header-status">STATUS: INITIALISIERUNG</div>
-</header>
+  <header class="header">
+    <div>
+      <div class="header-title">PROTOKOLL 12 // SYSTEMKERN</div>
+      <div class="small">VERBINDUNG: VERSCHLÜSSELT</div>
+    </div>
+    <div id="systemStatus" class="header-status">STATUS: INITIALISIERUNG</div>
+  </header>
 
-<section id="bootStage" class="stage">
-<div id="bootOutput" class="terminal-output"></div>
-<button id="startTransmissionBtn" class="terminal-button" hidden>&gt; ÜBERTRAGUNG STARTEN</button>
-<div id="loadingMessage" class="message warning" hidden>DIE ÜBERTRAGUNG WIRD NOCH GELADEN.<br>BITTE EINEN MOMENT WARTEN.</div>
-</section>
+  <section id="bootStage" class="stage">
+    <div id="bootOutput" class="terminal-output" aria-live="polite"></div>
+    <button id="startTransmissionBtn" class="terminal-button" type="button" hidden>
+      &gt; ÜBERTRAGUNG STARTEN
+    </button>
+    <div id="loadingMessage" class="message warning" hidden>
+      DIE ÜBERTRAGUNG WIRD NOCH GELADEN.<br>
+      BITTE EINEN MOMENT WARTEN.
+    </div>
+  </section>
 
-<section id="videoStage" class="stage" hidden>
-<div class="video-frame"><div id="youtubePlayer"></div></div>
-<div id="videoError" class="message error" hidden>DIE ÜBERTRAGUNG KONNTE NICHT GELADEN WERDEN.</div>
-</section>
+  <section id="video1Stage" class="stage" hidden>
+    <div class="video-frame">
+      <div id="youtubePlayer1"></div>
+    </div>
+    <div id="video1Error" class="message error" hidden>
+      DIE ÜBERTRAGUNG KONNTE NICHT GELADEN WERDEN.
+    </div>
+  </section>
 
-<section id="decisionStage" class="stage" hidden>
-<div id="decisionIntro" class="terminal-output"></div>
-<div id="deleteDialog" class="delete-dialog" hidden>
-<div class="warning-title">WARNUNG</div>
-<p>PROTOKOLL 12 kann dauerhaft gelöscht werden.</p>
-<p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
-<div class="separator"></div>
-<p>&gt; Entscheidung erforderlich</p>
-<div class="button-row">
-<button id="cancelDeleteBtn" class="terminal-button secondary">[ ABBRECHEN ]</button>
-<button id="confirmDeleteBtn" class="terminal-button danger">[ ENDGÜLTIG LÖSCHEN ]</button>
-</div>
-<div id="cancelMessage" class="message warning" hidden>VORGANG ABGEBROCHEN.<br>DER ZUGANG BLEIBT OFFEN.</div>
-</div>
-</section>
+  <section id="decisionStage" class="stage" hidden>
+    <div id="decisionIntro" class="terminal-output" aria-live="polite"></div>
 
-<section id="deleteStage" class="stage" hidden><div id="deleteOutput" class="terminal-output"></div></section>
+    <div id="deleteDialog" class="delete-dialog" hidden>
+      <div class="warning-title">WARNUNG</div>
 
-<section id="afterDeleteStage" class="stage" hidden><div id="afterDeleteOutput" class="terminal-output"></div></section>
+      <p>PROTOKOLL 12 kann dauerhaft gelöscht werden.</p>
+      <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
 
-<section id="video2Stage" class="stage" hidden>
-<div class="video-frame"><div id="youtubePlayer2"></div></div>
-<div id="video2Error" class="message error" hidden>DIE ZWEITE ÜBERTRAGUNG KONNTE NICHT GELADEN WERDEN.</div>
-</section>
+      <div class="separator"></div>
 
-<section id="finalStage" class="stage final-stage" hidden>
-<div id="finalMessage">KEINE DATEN VORHANDEN</div>
-<div id="finalCursor" class="final-cursor">█</div>
-</section>
+      <p>&gt; Entscheidung erforderlich</p>
+
+      <div class="button-row">
+        <button id="cancelDeleteBtn" class="terminal-button secondary" type="button">
+          [ ABBRECHEN ]
+        </button>
+
+        <button id="confirmDeleteBtn" class="terminal-button danger" type="button">
+          [ ENDGÜLTIG LÖSCHEN ]
+        </button>
+      </div>
+
+      <div id="cancelMessage" class="message warning" hidden>
+        VORGANG ABGEBROCHEN.<br>
+        DER ZUGANG BLEIBT OFFEN.
+      </div>
+    </div>
+  </section>
+
+  <section id="deleteStage" class="stage" hidden>
+    <div id="deleteOutput" class="terminal-output" aria-live="polite"></div>
+  </section>
+
+  <section id="reconnectStage" class="stage" hidden>
+    <div id="reconnectOutput" class="terminal-output" aria-live="polite"></div>
+  </section>
+
+  <section id="video2Stage" class="stage" hidden>
+    <div class="video-frame">
+      <div id="youtubePlayer2"></div>
+    </div>
+    <div id="video2Error" class="message error" hidden>
+      DIE ZWEITE ÜBERTRAGUNG KONNTE NICHT GELADEN WERDEN.
+    </div>
+  </section>
+
+  <section id="finalStage" class="stage final-stage" hidden>
+    <div id="finalMessage">KEINE DATEN VORHANDEN</div>
+    <div id="finalCursor" class="final-cursor">█</div>
+  </section>
 </main>
 
 <script src="https://www.youtube.com/iframe_api"></script>
-<script src="js/finale.js?v=4"></script>
+<script src="js/finale.js?v=5"></script>
 </body>
 </html>

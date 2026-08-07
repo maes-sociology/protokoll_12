@@ -1,16 +1,15 @@
-# PROTOKOLL 12 – Finale v2
+# PROTOKOLL 12 – Finale v2 Fix
 
-Video 1: https://youtu.be/B92TGumLWn0
-Video 2: https://youtu.be/XqSRAzm5FHU
-
-Nach Video 2 erscheint nur:
-KEINE DATEN VORHANDEN
-
-Der Cursor verschwindet nach 5 Sekunden.
+Fehler behoben:
+`KEINE DATEN VORHANDEN` wird jetzt wirklich erst nach dem Ende von Video 2 angezeigt.
 
 Ersetze:
 - finale.html
 - css/finale.css
-- js/finale.js
 
-Danach committen und pushen.
+`js/finale.js` ist unverändert, aber im Paket enthalten.
+
+Danach:
+1. Commit to main
+2. Push origin
+3. finale.html mit Cmd+Shift+R bzw. Strg+F5 neu laden

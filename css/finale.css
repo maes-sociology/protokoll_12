@@ -25,3 +25,6 @@ body{margin:0;min-height:100vh;padding:18px;display:flex;justify-content:center;
 #finalMessage{font-size:clamp(1.25rem,4vw,2.2rem);letter-spacing:.14em;font-weight:bold}
 .final-cursor{margin-top:18px;font-size:1.2rem}
 @media(max-width:650px){body{padding:10px}.terminal{width:100%;min-height:100vh;padding:18px}.header{display:block}.header-status{margin-top:8px;text-align:left}.stage{min-height:470px}.terminal-output{min-height:360px;font-size:15px}.button-row{display:block}.button-row .terminal-button{width:100%}}
+
+
+[hidden]{display:none !important;}
